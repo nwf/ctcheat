@@ -1,0 +1,217 @@
+\documentclass[10pt,twocolumn,letterpaper]{amsart}
+\DeclareSymbolFont{AMSb}{U}{msb}{m}{n}
+\DeclareMathAlphabet{\mathbbm}{U}{bbm}{m}{n}
+\title{Category Theory Cheat Sheet}
+%\author{Nathaniel Wesley Filardo}
+
+\usepackage{amsmath,amssymb,amsthm,latexsym}
+\usepackage{fancyhdr}
+\usepackage[cm]{fullpage}
+\usepackage{pstricks}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{bm}
+\usepackage{ifthen}
+\usepackage{epsfig}
+\usepackage[all]{xypic}
+\usepackage{textcomp}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{breakurl}
+
+\renewcommand{\baselinestretch}{0.9}
+
+\newtheorem{thm}{Thm}[section]
+\newtheorem{dfn}{Def}[section]
+
+%Scalable bracket-like
+\newcommand{\paren}[1]{\left({#1}\right)}
+\newcommand{\brak}[1]{\left[{#1}\right]}
+\newcommand{\abs}[1]{\left\lvert{#1}\right\rvert}
+\newcommand{\ang}[1]{\left\langle{#1}\right\rangle}
+\newcommand{\set}[1]{\left\{{#1}\right\}}
+
+%Mathematics
+\newcommand{\condexp}[1]{\ifthenelse{\equal{#1}{false}}{}{^{#1}}}
+\newcommand{\dd}[3][false]{\frac{d\condexp{#1}{#2}}{d{#3}\condexp{#1}}}
+\newcommand{\pd}[3][false]{\frac{\partial\condexp{#1}{#2}}{\partial{#3}\condexp{#1}}}
+
+\newcommand{\ifrac}[2]{{#1}/{#2}}
+
+%Quantum Mechanics
+\newcommand{\ket}[1]{\left\lvert{#1}\right\rangle}
+\newcommand{\bra}[1]{\left\langle{#1}\right\rvert}
+\newcommand{\braket}[2]{\left\langle{#1}\middle\vert{#2}\right\rangle}
+\newcommand{\Braket}[3]{\left\langle{#1}\middle\vert{#2}\middle\vert{#3}\right\rangle}
+\newcommand{\dyad}[2]{\left\lvert{#1}\middle\rangle\middle\langle{#2}\right\rvert}
+
+\DeclareMathOperator{\mm}{\mid\mid}
+
+\newcommand{\defn}[1]{\label{dfn:#1}{\em #1}}
+
+\begin{document}
+
+%\maketitle
+\bibliographystyle{plainurl}
+
+\section{Basics}
+
+  \begin{dfn}A \defn{category} (p4,\S1.3) is a structure with
+  \begin{itemize}
+    \item Objects \& arrows (from \defn{domain} to \defn{codomain}).
+    \item An associative arrow composition operator $\circ$.
+    \item Identity arrows ($1_A$) on each object $A$, unit of $\circ$
+  \end{itemize}
+  \end{dfn}
+
+  \begin{dfn}A \defn{functor} (p8,D1.2) $F$ is a map between categories which
+     sends $A \to B$ to $FA \to FB$, sends $1_A$ to $1_{FA}$, and honors composition.
+  \end{dfn}
+
+  \begin{dfn}$\mbox{Hom}_\mathbf{C}(A,B)$ denotes the class $(A \to B) \in \mathbf{C}$.\end{dfn}
+
+  \begin{dfn}The \defn{dual} (p15,i2) category $\mathbf{C}^{op}$ which
+    exchanges domains and codomains of arrows in $\mathbf{C}$.
+  \end{dfn}
+
+  \begin{thm}Any CT statement implies its dual (interchange dom/cod and reverse compositions).\end{thm}
+
+  \subsection{Categories over $\mathbf{C}$'s objects}
+
+  \begin{dfn}The \defn{arrow} (p16,i3) category $\mathbf{C}^\to$ has arrows
+     for commutative squares in $\mathbf{C}$.  There are two functors
+     \[\xymatrix{ \mathbf{C} & \ar[l]_{\mathbf{dom}} C^\to \ar[r]^{\mathbf{cod}} & \mathbf{C}}\]
+  \end{dfn}
+
+  \begin{dfn}The \defn{slice} (p16,i4) category $\mathbf{C}/C$ has objects
+     of arrows in $\mathbf{C}$ with codomain $C$.  Arrows are tops of commutative triangles.
+  \end{dfn}
+
+  \subsection{Foundations}
+
+  \begin{thm}Categories may be described (p21) as
+     \[\xymatrix{ C_2 \ar[r]^\circ & C_1 \ar@<2ex>[r]_{cod} \ar@<-2ex>[r]_{dom} & C_0 \ar[l]^i }\]
+  \end{thm}
+
+  \begin{dfn}A category is (p24-25,D1.11-12)\dots
+    \begin{itemize}
+      \item \defn{small} if $C_0$ and $C_1$ is a set and \defn{large} otherwise.
+      \item \defn{locally small} if $\forall_{X,Y \in C_0} \mbox{Hom}_C(X,Y) \subseteq C_1$ is a set.
+    \end{itemize}
+  \end{dfn}
+
+\section{Special Kinds of Arrows}
+
+  \begin{dfn}$m$ is \defn{monic} (p25,D2.1) if $mi = mj \Rightarrow i = j$ in
+    \[\xymatrix{C \ar@<1ex>[r]^{i} \ar@<-1ex>[r]_j & A \ar@{>->}[r]^m & B} \]
+  \end{dfn}
+
+  \begin{dfn}A \defn{subobject} (p77,D5.1) of $X$ is mono with cod $X$.\end{dfn}
+
+  \begin{dfn}$e$ is \defn{epic} (p25,D2.1) if it is monic in $\mathbf{C}^{op}$,
+          {\it i.e.,} if $ie = je \Rightarrow i = j$ in
+    \[\xymatrix{A \ar@{->>}[r]^e & B \ar@<1ex>[r]^{i} \ar@<-1ex>[r]_j & C} \]
+  \end{dfn}
+
+  \begin{thm}(p27,P2.6) Every iso is both monic and epic.\end{thm}
+
+  \begin{dfn}A \defn{split mono} (\defn{epi}) has a left (right) inverse. (p28,D2.7)\end{dfn}
+
+  \begin{dfn}Given $e : A \to B$ and $s : B \to A$ s.t. $es = 1_A$, $e$ is a \defn{retraction}
+    of $s$ and $s$ is a \defn{section} (\defn{splitting}) of $e$. (p28,D2.7)\end{dfn}
+
+  \begin{thm}Functors preserve split monos and epis.\end{thm}
+
+   \begin{dfn}An \defn{point} (p32) of $C$ is any $c : 1 \to C$.\end{dfn}
+                  
+   \begin{thm}Arrows in $\mathbf{Sets}$, but not $\mathbf{Pos}$, are pointwise.\end{thm}
+
+\section{Universal Constructions}
+
+  \begin{thm}Objects defined by universal constructions are unique up to isomorphism.
+  \end{thm}
+
+  \begin{dfn}$0$ is \defn{initial} iff
+    $\forall_C \exists! u : 0 \to C$.
+  \end{dfn}
+
+  \begin{dfn}$1$ is \defn{terminal} iff
+    $\forall_C \exists! u : C \to 1 $.
+  \end{dfn}
+
+  \begin{dfn}$(A \times B,\pi_1,\pi_2)$ is a \defn{product} iff
+    \[\xymatrix{
+    {}\save[]+<-1cm,0cm>*\txt<8pc>{$\forall_{Z,z_1,z_2} \exists!_u$\\$u\pi_1 = z_1 ~\wedge~ u\pi_2 = z_2$}\restore
+    &      & Z \ar[dl]_{z_1} \ar[dr]^{z_2} \ar[d]^u & \\
+    &    A & \ar[l]_{\pi_1} A \times B \ar[r]^{\pi_2} & B \\
+    }\]
+  \end{dfn}
+
+  \begin{dfn}$(E,e)$ is an \defn{equalizer} (p56,D3.13) of $f,g$ iff
+     \[\forall_{Z,z . zf = zg} \exists!_u eu = z \quad
+     \xymatrix{
+     Z \ar@{..>}[r]^u \ar@/_1pc/[rr]^{z} & E \ar[r]^e & A \ar@<1ex>[r]^f \ar@<-1ex>[r]_g & B \\
+     }\]
+  \end{dfn}
+
+  \begin{dfn}$(P,p_1,p_2)$ is a \defn{pullback} (p80,D5.4) of $f,g$ iff
+     \[\xymatrix{
+     {}\save[]+<-1cm,0cm>*\txt<8pc>{$\forall_{Z,z_1,z_2 . fz_1 = gz_2}\exists!_u$\\$z_1 = p_1u ~\wedge~ z_2 = p_2u$}\restore
+     & Z \ar[dr]_{z_2} \ar@/^1pc/[rr]_{z_1} \ar[r]_u & P \ar[d]^{p_1} \ar[r]_{p_2} & B \ar[d]^g \\
+     &                                              & A \ar[r]^f & C
+     }\]
+     $P$ may be denoted $A \times_C B$ when $f,g$ are clear.
+  \end{dfn}
+
+\section{Properties of UCs}
+
+  \begin{thm}Equalizers are monic.\end{thm}
+
+  \begin{thm}(p81,P5.5) $(Z,u)$ in a pullback is an equalizer of $fp_1$ and $gp_2$.
+    If $(E,e)$ is an equalizer of same, then $E,p_1e,p_2e$ is a pullback of $f,g$.
+  \end{thm}
+
+  \begin{thm}(p84,L5.8) In the commuting diagram
+    \[\xymatrix{ F \ar[r]_{f'} \ar[d]^{h''} & E \ar[r]_{g'} \ar[d]^{h'} & D \ar[d]^{h} \\
+       A \ar[r]^f & B \ar[r]^g & C
+    }\]
+    \begin{enumerate}
+      \item If $FEBA$ and $EDCB$ are pullbacks, so is $FDCA$.
+      \item If $FDCA$ and $EDCB$ are pullbacks, so is $FEBA$.
+    \end{enumerate}
+  \end{thm}
+
+  \begin{thm}Pullbacks preserve commutative triangles.\end{thm}
+
+\section{Special Functors}
+
+  \begin{dfn}The \defn{covariant representable functor} (p44) is
+     \[\mbox{Hom}(A,\text{---}) : \mathbf{C} \to \mathbf{Sets}\]
+  \end{dfn}
+
+  \begin{thm}(p85,P5.10) Pullback defines a functor
+    \[ h^* : (A \stackrel{\alpha}{\to} C) \in \mathbf{C}/C
+       \mapsto (C' \times_C A \stackrel{\alpha'}{\to} C') \in \mathbf{C}/C' \]
+    where $\alpha'$ is the pullback of $\alpha$ along $h$.
+  \end{thm}
+
+\section{Glossary}
+
+  \begin{dfn}A category is \defn{finitely presented} (p75) if it is the
+  free category over a finite graph quotiented by a finite set of equations.
+  \end{dfn}
+
+  \begin{dfn}
+  A structure is \defn{free} over $S$ if its elements are ``generated''
+  from $S$ and no ``nontrivial'' equations exist.
+  \end{dfn}
+
+  \begin{dfn}Subobject $m$'s \defn{local membership relation}:
+          \[ \forall_{m : M \rightarrowtail X}
+             \brak{ z \in_X M \Leftrightarrow \exists_{f:Z \to M} z = mf} \] 
+  \end{dfn}
+
+\end{document}
+
+% vim:ts=2:expandtab
