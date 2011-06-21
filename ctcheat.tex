@@ -1,4 +1,4 @@
-\documentclass[10pt,twocolumn,letterpaper]{amsart}
+\documentclass[10pt,twocolumn,letterpaper]{article}
 \DeclareSymbolFont{AMSb}{U}{msb}{m}{n}
 \DeclareMathAlphabet{\mathbbm}{U}{bbm}{m}{n}
 \title{Category Theory Cheat Sheet}
@@ -6,6 +6,7 @@
 
 \usepackage{amsmath,amssymb,amsthm,latexsym}
 \usepackage{fancyhdr}
+\usepackage[tiny,center,compact,sc]{titlesec}
 \usepackage[cm]{fullpage}
 \usepackage{pstricks}
 \usepackage{graphicx}
@@ -22,8 +23,11 @@
 
 \renewcommand{\baselinestretch}{0.9}
 
-\newtheorem{thm}{Thm}[section]
-\newtheorem{dfn}{Def}[section]
+%\newtheorem{thm}{Thm}[section]
+%\newtheorem{dfn}{Def}[section]
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
 
 %Scalable bracket-like
 \newcommand{\paren}[1]{\left({#1}\right)}
@@ -48,7 +52,7 @@
 
 \DeclareMathOperator{\mm}{\mid\mid}
 
-\newcommand{\defn}[1]{\label{dfn:#1}{\em #1}}
+\newcommand{\defn}[1]{{\bf #1}}
 
 \begin{document}
 
@@ -57,122 +61,111 @@
 
 \section{Basics}
 
-  \begin{dfn}A \defn{category} (p4,\S1.3) is a structure with
+  A \defn{category} (p4,\S1.3) is a structure with
   \begin{itemize}
     \item Objects \& arrows (from \defn{domain} to \defn{codomain}).
     \item An associative arrow composition operator $\circ$.
     \item Identity arrows ($1_A$) on each object $A$, unit of $\circ$
   \end{itemize}
-  \end{dfn}
 
-  \begin{dfn}A \defn{functor} (p8,D1.2) $F$ is a map between categories which
+  A \defn{functor} (p8,D1.2) $F$ is a map between categories which
      sends $A \to B$ to $FA \to FB$, sends $1_A$ to $1_{FA}$, and honors composition.
-  \end{dfn}
 
-  \begin{dfn}$\mbox{Hom}_\mathbf{C}(A,B)$ denotes the class $(A \to B) \in \mathbf{C}$.\end{dfn}
-
-  \begin{dfn}The \defn{dual} (p15,i2) category $\mathbf{C}^{op}$ which
+  The \defn{dual} (p15,i2) category $\mathbf{C}^{op}$ which
     exchanges domains and codomains of arrows in $\mathbf{C}$.
-  \end{dfn}
 
-  \begin{thm}Any CT statement implies its dual (interchange dom/cod and reverse compositions).\end{thm}
+  Any CT statement implies its dual (interchange dom/cod and reverse compositions).
 
   \subsection{Categories over $\mathbf{C}$'s objects}
 
-  \begin{dfn}The \defn{arrow} (p16,i3) category $\mathbf{C}^\to$ has arrows
+  The \defn{arrow} (p16,i3) category $\mathbf{C}^\to$ has arrows
      for commutative squares in $\mathbf{C}$.  There are two functors
      \[\xymatrix{ \mathbf{C} & \ar[l]_{\mathbf{dom}} C^\to \ar[r]^{\mathbf{cod}} & \mathbf{C}}\]
-  \end{dfn}
 
-  \begin{dfn}The \defn{slice} (p16,i4) category $\mathbf{C}/C$ has objects
+  The \defn{slice} (p16,i4) category $\mathbf{C}/C$ has objects
      of arrows in $\mathbf{C}$ with codomain $C$.  Arrows are tops of commutative triangles.
-  \end{dfn}
 
   \subsection{Foundations}
 
-  \begin{thm}Categories may be described (p21) as
+  Categories may be described (p21) as
      \[\xymatrix{ C_2 \ar[r]^\circ & C_1 \ar@<2ex>[r]_{cod} \ar@<-2ex>[r]_{dom} & C_0 \ar[l]^i }\]
-  \end{thm}
 
-  \begin{dfn}A category is (p24-25,D1.11-12)\dots
+  A category is (p24-25,D1.11-12)\dots
     \begin{itemize}
-      \item \defn{small} if $C_0$ and $C_1$ is a set and \defn{large} otherwise.
+      \item \defn{small} if $C_0$ and $C_1$ are sets and \defn{large} otherwise.
       \item \defn{locally small} if $\forall_{X,Y \in C_0} \mbox{Hom}_C(X,Y) \subseteq C_1$ is a set.
     \end{itemize}
-  \end{dfn}
 
 \section{Special Kinds of Arrows}
 
-  \begin{dfn}$m$ is \defn{monic} (p25,D2.1) if $mi = mj \Rightarrow i = j$ in
+  $m$ is \defn{monic} (p25,D2.1) if $mi = mj \Rightarrow i = j$ in
     \[\xymatrix{C \ar@<1ex>[r]^{i} \ar@<-1ex>[r]_j & A \ar@{>->}[r]^m & B} \]
-  \end{dfn}
 
-  \begin{dfn}A \defn{subobject} (p77,D5.1) of $X$ is mono with cod $X$.\end{dfn}
+  A \defn{subobject} (p77,D5.1) of $X$ is mono with cod $X$.
 
-  \begin{dfn}$e$ is \defn{epic} (p25,D2.1) if it is monic in $\mathbf{C}^{op}$,
+  $e$ is \defn{epic} (p25,D2.1) if it is monic in $\mathbf{C}^{op}$,
           {\it i.e.,} if $ie = je \Rightarrow i = j$ in
     \[\xymatrix{A \ar@{->>}[r]^e & B \ar@<1ex>[r]^{i} \ar@<-1ex>[r]_j & C} \]
-  \end{dfn}
 
-  \begin{thm}(p27,P2.6) Every iso is both monic and epic.\end{thm}
+  (p27,P2.6) Every iso is both monic and epic.
 
-  \begin{dfn}A \defn{split mono} (\defn{epi}) has a left (right) inverse. (p28,D2.7)\end{dfn}
+  A \defn{split mono} (\defn{epi}) has a left (right) inverse. (p28,D2.7)
 
-  \begin{dfn}Given $e : A \to B$ and $s : B \to A$ s.t. $es = 1_A$, $e$ is a \defn{retraction}
-    of $s$ and $s$ is a \defn{section} (\defn{splitting}) of $e$. (p28,D2.7)\end{dfn}
+  Given $e : A \to B$ and $s : B \to A$ s.t. $es = 1_A$, $e$ is a \defn{retraction}
+    of $s$ and $s$ is a \defn{section} (\defn{splitting}) of $e$. (p28,D2.7)
 
-  \begin{thm}Functors preserve split monos and epis.\end{thm}
+  Functors preserve split monos and epis.
 
-   \begin{dfn}An \defn{point} (p32) of $C$ is any $c : 1 \to C$.\end{dfn}
-                  
-   \begin{thm}Arrows in $\mathbf{Sets}$, but not $\mathbf{Pos}$, are pointwise.\end{thm}
+  A \defn{point} (p32) of $C$ is any $c : 1 \to C$. (Arrows in
+  $\mathbf{Sets}$, but not $\mathbf{Pos}$, are pointwise.)
+
+  A \defn{cone} (p89,D5.15) to a diagram $D(J)$ is a collection of arrows
+    $c_j : C \to D_j$ s.t. $\forall_{D_\alpha \in D(J)} c_j = D_\alpha \circ
+    c_i$.
+  A morphism between cones is an arrow $\phi : C \to C'$ s.t.
+    $\forall_{D_j \in D(J)} c_j^\prime \circ \phi = c_j$.  Cones form a
+    category.
 
 \section{Universal Constructions}
 
-  \begin{thm}Objects defined by universal constructions are unique up to isomorphism.
-  \end{thm}
+  Objects defined by UCs are unique up to isomorphism.
 
-  \begin{dfn}$0$ is \defn{initial} iff
-    $\forall_C \exists! u : 0 \to C$.
-  \end{dfn}
+  $0$ is \defn{initial} iff $\forall_C \exists!_u 0 \to C$.
+  $1$ is \defn{terminal} iff $\forall_C \exists!_u C \to 1 $.
 
-  \begin{dfn}$1$ is \defn{terminal} iff
-    $\forall_C \exists! u : C \to 1 $.
-  \end{dfn}
-
-  \begin{dfn}$(A \times B,\pi_1,\pi_2)$ is a \defn{product} iff
+  $(A \times B,\pi_1,\pi_2)$ is a \defn{product} iff
     \[\xymatrix{
     {}\save[]+<-1cm,0cm>*\txt<8pc>{$\forall_{Z,z_1,z_2} \exists!_u$\\$u\pi_1 = z_1 ~\wedge~ u\pi_2 = z_2$}\restore
     &      & Z \ar[dl]_{z_1} \ar[dr]^{z_2} \ar[d]^u & \\
     &    A & \ar[l]_{\pi_1} A \times B \ar[r]^{\pi_2} & B \\
     }\]
-  \end{dfn}
 
-  \begin{dfn}$(E,e)$ is an \defn{equalizer} (p56,D3.13) of $f,g$ iff
+  $(E,e)$ is an \defn{equalizer} (p56,D3.13) of $f,g$ iff
      \[\forall_{Z,z . zf = zg} \exists!_u eu = z \quad
      \xymatrix{
      Z \ar@{..>}[r]^u \ar@/_1pc/[rr]^{z} & E \ar[r]^e & A \ar@<1ex>[r]^f \ar@<-1ex>[r]_g & B \\
      }\]
-  \end{dfn}
 
-  \begin{dfn}$(P,p_1,p_2)$ is a \defn{pullback} (p80,D5.4) of $f,g$ iff
+  $(P,p_1,p_2)$ is a \defn{pullback} (p80,D5.4) of $f,g$ iff
      \[\xymatrix{
      {}\save[]+<-1cm,0cm>*\txt<8pc>{$\forall_{Z,z_1,z_2 . fz_1 = gz_2}\exists!_u$\\$z_1 = p_1u ~\wedge~ z_2 = p_2u$}\restore
      & Z \ar[dr]_{z_2} \ar@/^1pc/[rr]_{z_1} \ar[r]_u & P \ar[d]^{p_1} \ar[r]_{p_2} & B \ar[d]^g \\
      &                                              & A \ar[r]^f & C
      }\]
      $P$ may be denoted $A \times_C B$ when $f,g$ are clear.
-  \end{dfn}
+
+  A \defn{limit} (p90,D5.16) of a diagram $D(J)$ is a
+  terminal object in the category $\mathbf{Cone}(D(J))$.  Written:
+  $c_i : (\varprojlim_{j} D_j) \to D_i$.
 
 \section{Properties of UCs}
 
-  \begin{thm}Equalizers are monic.\end{thm}
+  Equalizers are monic.
 
-  \begin{thm}(p81,P5.5) $(Z,u)$ in a pullback is an equalizer of $fp_1$ and $gp_2$.
+  (p81,P5.5) $(Z,u)$ in a pullback is an equalizer of $fp_1$ and $gp_2$.
     If $(E,e)$ is an equalizer of same, then $E,p_1e,p_2e$ is a pullback of $f,g$.
-  \end{thm}
 
-  \begin{thm}(p84,L5.8) In the commuting diagram
+  (p84,L5.8) In the commuting diagram
     \[\xymatrix{ F \ar[r]_{f'} \ar[d]^{h''} & E \ar[r]_{g'} \ar[d]^{h'} & D \ar[d]^{h} \\
        A \ar[r]^f & B \ar[r]^g & C
     }\]
@@ -180,37 +173,79 @@
       \item If $FEBA$ and $EDCB$ are pullbacks, so is $FDCA$.
       \item If $FDCA$ and $EDCB$ are pullbacks, so is $FEBA$.
     \end{enumerate}
-  \end{thm}
 
-  \begin{thm}Pullbacks preserve commutative triangles.\end{thm}
+  (p84,C5.9) Pullbacks preserve commutative triangles.
+
+  UCs reduce to limits (p91,E5.17-20):
+  \begin{tabular}{cccc}
+      terminals & products & equalizers & pullbacks \\
+      %
+      & $\xymatrix@C5pt{x & y}$
+      & $\xymatrix{x \ar@<1ex>[r]^{\alpha} \ar@<-1ex>[r]_{\beta} & y}$
+      & $\xymatrix@C5pt@R5pt{& x \ar[d] \\ y \ar[r] & z}$
+  \end{tabular}
+
+\section{Exponentials}
+
+  (p107,D6.1) In a category with binary products, given two objects $B$ and $C$,
+  their \defn{exponential} is an object $C^B$ and arrow $\epsilon : C^B \times B \to C$
+  s.t.
+     \[\xymatrix{
+     {}\save[]+<-1cm,0cm>*\txt<8pc>{$\forall_{A,f : A \times B \to C}\exists!_{\tilde f : A \to C^B}$\\
+                                    $\epsilon \circ (\tilde f \times 1_B) = f$}\restore
+     & C^B & C^B \times B \ar[r]^\epsilon & C \\
+     & A \ar[u]^{\tilde f} & A \times B \ar[u]^{\tilde f \times 1_B} \ar[ur]_f
+     }\]
+  The arrows $f$ and $\tilde f$ are ``exponential transposes.''
+
+  Exponential transposition is self inverse (p108).  This implies
+    \[ \mbox{Hom}_{\bf C}(A \times B, C) \simeq \mbox{Hom}_{\bf C}(A, C^B) \]
+
+\section{Properties of Functors}
+
+  A functor $F : C \to C'$ \defn{preserves limits of type $J$} if
+    \[ \forall_{D : J \to C}\forall_{\varprojlim_j D_j} F(\varprojlim_j D_j) \simeq \varprojlim_j F(D_j).\]
+  A functor is \defn{continuous} if it preserves all limits. (p94,D5.24)
+
+  A functor $F : C \to C'$ \defn{creates limits of type $J$} if $\forall_{D : J \to C}$
+  and all limits $L = \varprojlim_j FD_j$ (i.e., bundle $p_j : L \to FD_j$ in $C'$),
+  $\exists! (\bar{p_j} : \bar{L} \to D_j) \in C'$ with $F(\bar L) = L$, $F(\bar{p_j}) = p_j$,
+  and $\bar L = \varprojlim_j D_j$. 
 
 \section{Special Functors}
 
-  \begin{dfn}The \defn{covariant representable functor} (p44) is
+  The \defn{covariant representable functors} (p44) are
      \[\mbox{Hom}(A,\text{---}) : \mathbf{C} \to \mathbf{Sets}\]
-  \end{dfn}
+  These functors preserve all limits (p94,P5.25).
 
-  \begin{thm}(p85,P5.10) Pullback defines a functor
+  (p85,P5.10) Pullback defines a functor
     \[ h^* : (A \stackrel{\alpha}{\to} C) \in \mathbf{C}/C
        \mapsto (C' \times_C A \stackrel{\alpha'}{\to} C') \in \mathbf{C}/C' \]
     where $\alpha'$ is the pullback of $\alpha$ along $h$.
-  \end{thm}
 
 \section{Glossary}
 
-  \begin{dfn}A category is \defn{finitely presented} (p75) if it is the
-  free category over a finite graph quotiented by a finite set of equations.
-  \end{dfn}
+  A category is \defn{cartesian closed} (p108,D6.2) if it has all finite
+  products and exponentials.
 
-  \begin{dfn}
+  A \defn{diagram} (p89,D5.15) is a functor $D : J \to C$ from
+     some indexing category $J$.
+
+  A category is \defn{finitely presented} (p75) if it is the
+  free category over a finite graph quotiented by a finite set of equations.
+
   A structure is \defn{free} over $S$ if its elements are ``generated''
   from $S$ and no ``nontrivial'' equations exist.
-  \end{dfn}
 
-  \begin{dfn}Subobject $m$'s \defn{local membership relation}:
+  $\mbox{Hom}_\mathbf{C}(A,B)$ denotes the class $(A \to B) \in \mathbf{C}$.
+
+  Subobject $m$'s \defn{local membership relation}:
           \[ \forall_{m : M \rightarrowtail X}
-             \brak{ z \in_X M \Leftrightarrow \exists_{f:Z \to M} z = mf} \] 
-  \end{dfn}
+             \brak{ z \in_X M \Leftrightarrow \exists_{f:Z \to M} z = mf} \]
+
+  An \defn{$\omega$-complete Partial Order} ($\omega$CPO) is a Poset which
+    has all {\em co}limits of type $(\mathbb{N},\le)$.  (All countably
+    infinite ascending chains have a top.) (p101,E5.33)
 
 \end{document}
 
