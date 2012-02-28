@@ -201,16 +201,44 @@
   Exponential transposition is self inverse (p108).  This implies
     \[ \mbox{Hom}_{\bf C}(A \times B, C) \simeq \mbox{Hom}_{\bf C}(A, C^B) \]
 
-\section{Properties of Functors}
+\section{Functors}
 
-  A functor $F : C \to C'$ \defn{preserves limits of type $J$} if
-    \[ \forall_{D : J \to C}\forall_{\varprojlim_j D_j} F(\varprojlim_j D_j) \simeq \varprojlim_j F(D_j).\]
-  A functor is \defn{continuous} if it preserves all limits. (p94,D5.24)
+  A functor $F : C \to D$\dots
+  \begin{itemize}
+    \item is \defn{faithful} (D7.1) if the induced
+      \[ F_{A,B} : \mbox{Hom}_C(A,B) \to \mbox{Hom}_D(FA,FB) \]
+      is injective.
 
-  A functor $F : C \to C'$ \defn{creates limits of type $J$} if $\forall_{D : J \to C}$
-  and all limits $L = \varprojlim_j FD_j$ (i.e., bundle $p_j : L \to FD_j$ in $C'$),
-  $\exists! (\bar{p_j} : \bar{L} \to D_j) \in C'$ with $F(\bar L) = L$, $F(\bar{p_j}) = p_j$,
-  and $\bar L = \varprojlim_j D_j$. 
+    \item is \defn{full} if $F_{A,B}$ is surjective.
+
+    \item \defn{preserves limits of type $J$} if
+      \[ \forall_{D : J \to C}\forall_{\varprojlim_j D_j} F(\varprojlim_j D_j) \simeq \varprojlim_j F(D_j).\]
+
+    \item is \defn{continuous} if it preserves all limits. (p94,D5.24)
+
+    \item \defn{creates limits of type $J$} if $\forall_{D : J \to C}$
+      and all limits $L = \varprojlim_j FD_j$ (i.e., bundle $p_j : L \to FD_j$ in $C'$),
+      $\exists! (\bar{p_j} : \bar{L} \to D_j) \in C'$ with $F(\bar L) = L$, $F(\bar{p_j}) = p_j$,
+      and $\bar L = \varprojlim_j D_j$. 
+  \end{itemize}
+
+  A \defn{natural transformation} (p134,D7.6) from $F : C \to D$ to $G : C \to D$ ($F
+  \stackrel{\cdot}{\to} D$) is a family of $D$-arrows $\paren{\eta_X}_{X \in C_0}$ s.t.
+  \[\xymatrix{
+     {}\save[]+<-1cm,0cm>*\txt<8pc>{$\forall_{A,B,f \in C}$\\$Gf\circ \eta_A = \eta_B\circ Ff$}\restore
+      & FA \ar[r]^{\eta_A} \ar[d]_{Ff} & GA \ar[d]^{Gf} \\
+      & FB \ar[r]^{\eta_B}             & GB} \]
+
+  An \defn{adjunction} (p180,D9.1) of $F : C \to D$ and $G : D \to C$ is a natural
+  transformation $\eta : I_C \stackrel{\cdot}{\to} (G\circ F)$ s.t.
+  \[\xymatrix{
+     {}\save[]+<-1cm,0cm>*\txt<8pc>{$\forall_{f:X \to GY}\exists!_{f^\#:FX\to Y}$\\
+                                    $f = Gf^\# \circ \eta_X$}\restore
+      & X \ar[dr]^f \ar[r]^{\eta_X} & GFX \ar[d]^{Gf^\#} \\
+      & & GY
+  }\]
+  Equivalently (p189,D9.7), a natural {\em isomorphism}
+  \[ \phi : \mbox{Hom}_D(FC,D) \simeq \mbox{Hom}_C(C,GD), \quad \eta_X = \phi(1_{FX}) \]
 
 \section{Special Functors}
 
