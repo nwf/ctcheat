@@ -83,7 +83,7 @@ note the similarities---the {\em representation} of the structure reachable from
     & \txt{$\{f', f' \circ a,$\\ $b \circ f', b \circ f' \circ a\}$} \\
 } \]
 The two arrows from $\mbox{hom}(A,A) = \set{id_A, a}$ to $\mbox{hom}(A,B)
-= \set{f, f \circ a}$ are obtained by pre-composition:
+= \set{f, f \circ a}$ are obtained by post-composition:
 \begin{align*}
   \mbox{hom}(A,f) &= \set{ id_A \mapsto f, a \mapsto f \circ a } \\
   \mbox{hom}(A,f \circ a) &= \set{ id_a \mapsto f \circ a, a \mapsto f }
@@ -91,14 +91,14 @@ The two arrows from $\mbox{hom}(A,A) = \set{id_A, a}$ to $\mbox{hom}(A,B)
 (the last entry holds because $(f \circ a) \circ a = f \circ (a \circ a) = f
 \circ id_A = f$).  The four arrows from $\mbox{hom}(A,A)$ to
 $\mbox{hom}(A,B') = \set{f', f' \circ a, b \circ f', b \circ f' \circ a}$ are
-again obtained by pre-composition:
+again obtained by post-composition:
 \begin{align*}
   \mbox{hom}(A,f') &= \set{id_A \mapsto f', a \mapsto f' \circ a} \\
   \mbox{hom}(A,f' \circ a) &= \set{id_a \mapsto f' \circ a, a \mapsto f'} \\
   \mbox{hom}(A,b \circ f') &= \set{id_a \mapsto b \circ f', a \mapsto b \circ f' \circ a} \\
   \mbox{hom}(A,b \circ f' \circ a) &= \set{id_a \mapsto b \circ f' \circ a, a \mapsto b \circ f'}
 \end{align*}
-The two vertical arrows are (again by precomposition, and recall that $f' = g \circ f$):
+The two vertical arrows are (again by post-composition, and recall that $f' = g \circ f$):
 \begin{align*}
   \mbox{hom}(A,g) &= \set{f \mapsto f', f \circ a \mapsto f' \circ a} \\
   \mbox{hom}(A,b \circ g) &= \set{f \mapsto b \circ f', f \circ a \mapsto b \circ f' \circ a}
@@ -149,7 +149,7 @@ define $\tau_A$ at inputs other than $id_A$ just as well!) that
             &= F(f)(a_0)                     & \text{requirement}
 \end{align*}
 So $\tau$ is fully determined by naturality and the requirement given,
-precisely because $\mbox{hom}(A,-)$ on arrows captures pre-composition.
+precisely because $\mbox{hom}(A,-)$ on arrows captures post-composition.
 So: given a choice of $a_0 \in FA$, we can fully specify a natural transformation $\tau$.
 
 
