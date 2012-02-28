@@ -1,0 +1,124 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+\DeclareSymbolFont{AMSb}{U}{msb}{m}{n}
+\DeclareMathAlphabet{\mathbbm}{U}{bbm}{m}{n}
+\title{Category Theory Cheat Sheet}
+%\author{Nathaniel Wesley Filardo}
+
+\usepackage{amsmath,amssymb,amsthm,latexsym}
+\usepackage{fancyhdr}
+\usepackage[tiny,center,compact,sc]{titlesec}
+\usepackage[cm]{fullpage}
+\usepackage{pstricks}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{bm}
+\usepackage{ifthen}
+\usepackage{epsfig}
+\usepackage[all]{xypic}
+\usepackage{textcomp}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{breakurl}
+
+\renewcommand{\baselinestretch}{0.9}
+
+%\newtheorem{thm}{Thm}[section]
+%\newtheorem{dfn}{Def}[section]
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+
+%Scalable bracket-like
+\newcommand{\paren}[1]{\left({#1}\right)}
+\newcommand{\brak}[1]{\left[{#1}\right]}
+\newcommand{\abs}[1]{\left\lvert{#1}\right\rvert}
+\newcommand{\ang}[1]{\left\langle{#1}\right\rangle}
+\newcommand{\set}[1]{\left\{{#1}\right\}}
+
+%Mathematics
+\newcommand{\condexp}[1]{\ifthenelse{\equal{#1}{false}}{}{^{#1}}}
+\newcommand{\dd}[3][false]{\frac{d\condexp{#1}{#2}}{d{#3}\condexp{#1}}}
+\newcommand{\pd}[3][false]{\frac{\partial\condexp{#1}{#2}}{\partial{#3}\condexp{#1}}}
+
+\newcommand{\ifrac}[2]{{#1}/{#2}}
+
+%Quantum Mechanics
+\newcommand{\ket}[1]{\left\lvert{#1}\right\rangle}
+\newcommand{\bra}[1]{\left\langle{#1}\right\rvert}
+\newcommand{\braket}[2]{\left\langle{#1}\middle\vert{#2}\right\rangle}
+\newcommand{\Braket}[3]{\left\langle{#1}\middle\vert{#2}\middle\vert{#3}\right\rangle}
+\newcommand{\dyad}[2]{\left\lvert{#1}\middle\rangle\middle\langle{#2}\right\rvert}
+
+\DeclareMathOperator{\mm}{\mid\mid}
+
+\newcommand{\defn}[1]{{\bf #1}}
+
+\begin{document}
+
+Notation and references are to Ji\v{r}\'i Ad\'amek, Horst Herrlich, George
+E. Strecker's {\em Abstract and Concrete Categories: The Joy of Cats}.
+
+\section{Basics}
+
+  A \defn{category} (\S3.1) is a quadruple
+  $(\mathcal{O},\mbox{hom},id,\circ)$ with
+  \begin{itemize}
+    \item A collection of objects $\mathcal{O}$
+  \item For each object $A,B$, a (disjoint) collection of arrows
+    $\mbox{hom}(A,B)$ (from \defn{domain} to \defn{codomain}).
+    \item An associative arrow composition operator $\circ$.
+    \item Identity arrows ($id_A$) on each object $A$, unit of $\circ$
+  \end{itemize}
+
+  The \defn{dual} (\S3.5) category $\mathbf{A}^\text{op}$ which
+    exchanges domains and codomains of arrows in $\mathbf{A}$.
+
+\section{Special Relations on Categories}
+
+\section{Special Kinds of Arrows}
+
+  $f : A \to B$ is an \defn{isomorphism} if $\exists!_g . f \circ g = id_B
+    ~\wedge~ g \circ f = id_A$. (\S3.8; ! in \S3.11)
+
+  Let $G$ be a functor $\mathbf{A} \to \mathbf{B}$ and $B$ a
+  $\mathbf{B}$-object. A \defn{$G$-structured arrow with domain $B$}
+  is a pair $(f : B \to GA, A)$.  It is
+  \begin{itemize}
+    \item \defn{generating} if $\forall_{r,s : A \to A'} . Gr \circ f = Gs
+      \circ f \implies r = s$
+    \item \defn{extremally generating} if it is generating and $\forall_{m :
+      A' \to A, m ~\text{mono}, (g,A')} . f = Gm \circ g \implies m ~\text{iso}$.
+    \item \defn{$G$-universal for $B$} if $\forall_{(f', A')} .
+    \exists!_{\check f} . f' = G{\check f} \circ f$.
+  \end{itemize}
+
+\section{Functors}
+
+  A \defn{(covariant) functor} $F : \mathbf{A} \to \mathbf{B}$ (\S3.17)
+  assigns to each $\mathbf{A}$-object a $\mathbf{B}$-object and to each
+  $\mathbf{A}$-morphism a $\mathbf{B}$-morphism s.t. composition and
+  identites are {\em preserved}.
+
+  A \defn{contravariant functor} $F : \mathbf{A} \to \mathbf{B}$ (\S3.20.5)
+  is a functor from $\mathbf{A}^\text{op} \to \mathbf{B}$.
+
+  All functors preserve isomorphisms. (\S3.21)
+
+  A functor is (\S3.27)
+  \begin{itemize}
+    \item an \defn{embedding} if it is injective on morphisms.
+    \item \defn{faithful} if $\forall_{A,A'}$ the restriction $F\vert_{\mbox{hom}_A(A,A')}
+      \subseteq \mbox{hom}(FA, FA')$ is injective.
+    \item \defn{full} if said restrictions are surjective.
+    \item \defn{amnestic} if $f$ is an identity iff $Ff$ is an identity.
+  \end{itemize}
+
+  A functor $F : \mathbf{A} \to \mathbf{B}$ is (\S3.33)
+  \begin{itemize}  
+    \item \defn{isomorphism-dense} if $\forall_B . \exists_A . F(A) \simeq B$.
+    \item an \defn{equivalence} if it is full, faithful, and
+      isomorphism-dense.
+  \end{itemize}
+
+\end{document}
