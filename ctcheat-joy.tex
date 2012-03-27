@@ -59,6 +59,8 @@
 Notation and references are to Ji\v{r}\'i Ad\'amek, Horst Herrlich, George
 E. Strecker's {\em Abstract and Concrete Categories: The Joy of Cats}.
 
+Entries within each section are roughly sorted by definition, alphabetically.
+
 \section{Basics}
 
   A \defn{category} (\S3.1) is a quadruple
@@ -74,16 +76,82 @@ E. Strecker's {\em Abstract and Concrete Categories: The Joy of Cats}.
   The \defn{dual} (\S3.5) category $\mathbf{A}^\text{op}$ which
     exchanges domains and codomains of arrows in $\mathbf{A}$.
 
-\section{Special Relations on Categories}
+  A predicate $P$ is \defn{essentially unique} (\S7.3) if it is unique up to
+  isomorphism:
+  \begin{itemize}
+    \item If both $PA$ and $PB$, then $A \simeq B$
+    \item If $PA$ and $A \simeq B$, then $PB$.
+  \end{itemize}
 
-\section{Special Kinds of Arrows}
+  In a concrete category $(\mathbf{A}, U)$ over $\mathbf{X}$, $(UA
+  \overset{f}{\to} UB) \in \mathbf{X}$ \defn{is an $\mathbf{A}$-morphism} if
+  $f$ has a unique $U$-preimage in $\mathbf{A}$. (\S5.3, \S6.22)
 
-  $f : A \to B$ is an \defn{isomorphism} if $\exists!_g . f \circ g = id_B
-    ~\wedge~ g \circ f = id_A$. (\S3.8; ! in \S3.11)
+\section{Predicates on Categories}
+
+  A category is$\dots$
+  \begin{itemize}
+    \item \defn{balanced} if all bimorphisms are isomorphisms (\S7.49.2)
+    \item \defn{discrete} if all morphisms are identities. (\S3.26.1)
+    \item \defn{thin} if $\forall_{A,B} \mbox{hom}(A,B) \simeq \set{*}$. (\S3.26.2)
+  \end{itemize}
+
+  A \defn{concrete category} over $\mathbf{X}$ is a pair $(\mathbf{A},U :
+  \mathbf{A} \to \mathbf{X}$) with $U$ faithful. (\S5.1.1)
+
+  A \defn{construct} is a concrete category over $\mathbf{Set}$. (\S5.1.2)
+
+\section{Kinds of Objects}
+
+  $C$ is a \defn{coseparator} if $\forall_{f,g : B \to A} . f \ne g
+  \Rightarrow \exists_{h : A \to C} . h \circ f \ne h \circ g$. (\S7.17)
+
+  An object $A$ in a concrete category $\mathbf{A}$ over $\mathbf{X}$ is
+  \dots\! if $\forall_{B \in \mathbf{A}}$, \dots is an $\mathbf{A}$ arrow.
+  \begin{itemize}
+    \item \defn{discrete}, $(UA \to UB)$ (\S8.1)
+    \item \defn{indiscrete}, $(UB \to UA)$ (\S8.3)
+  \end{itemize}
+
+  An object $0$ is \defn{initial} if $\forall_B . \exists! f_B : 0 \to B$.
+  Initial objects are essentially unique. (\S7.1)
+
+  $S$ is a \defn{separator} if $\forall_{f,g : A \to B} . f \ne g
+  \Rightarrow \exists_{h : S \to A} . f \circ h \ne g \circ h$. (\S7.10)
+
+  $S$ is a separator iff $\mbox{hom}(S,-)$ is faithful. (\S7.12)
+
+  A set of objects $\mathcal{T}$ is a \defn{separating set} if
+  $\forall_{f,g : A \to B} . f \ne g \Rightarrow \exists{S \in \mathcal{T},
+  h : S \to A} . f \circ h \ne g \circ h$. (\S7.14)
+
+  An object $1$ is \defn{terminal} if $\forall_A . \exists! f_A : A \to 1$.
+  Terminal objects are essentially unique. (\S7.4)
+
+  An object that is both initial and terminal is called a \defn{zero}.
+  (\S7.7)
+
+\section{Kinds of Arrows}
+
+  $e$ is an \defn{epimorphism} (\S7.39) if it is monic in $\mathbf{C}^{op}$,
+          {\it i.e.,} if $ie = je \Rightarrow i = j$ in
+    \[\xymatrix{A \ar@{->>}[r]^e & B \ar@<1ex>[r]^{i} \ar@<-1ex>[r]_j & C} \]
+  If $f$ and $g$ are epis, then so is $g \circ f$; if $g \circ f$ is epi,
+  then so is $g$. (\S7.41)
+
+  $(E,e)$ is an \defn{equalizer} (\S7.51) of $f,g$ iff $fe = ge$ and
+     \[\forall_{Z,z . zf = zg} \exists!_u eu = z \quad
+     \xymatrix{
+     Z \ar@{..>}[r]^u \ar@/_1pc/[rr]^{z} & E \ar[r]^e & A \ar@<1ex>[r]^f \ar@<-1ex>[r]_g & B \\
+     }\]
+  Equalizers are essentially unique. (\S7.53)
+
+  A mono $m$ is a \defn{extremal} (\S7.61) if $e$ epic and
+  $m = f \circ e$ implies that $e$ iso.
 
   Let $G$ be a functor $\mathbf{A} \to \mathbf{B}$ and $B$ a
   $\mathbf{B}$-object. A \defn{$G$-structured arrow with domain $B$}
-  is a pair $(f : B \to GA, A)$.  It is
+  is a pair $(f : B \to GA, A)$. (\S8.30)  It is
   \begin{itemize}
     \item \defn{generating} if $\forall_{r,s : A \to A'} . Gr \circ f = Gs
       \circ f \implies r = s$
@@ -92,6 +160,47 @@ E. Strecker's {\em Abstract and Concrete Categories: The Joy of Cats}.
     \item \defn{$G$-universal for $B$} if $\forall_{(f', A')} .
     \exists!_{\check f} . f' = G{\check f} \circ f$.
   \end{itemize}
+
+  $f : A \to B$ is an \defn{isomorphism} if $\exists!_g . f \circ g = id_B
+    ~\wedge~ g \circ f = id_A$. (\S3.8; ! in \S3.11)
+
+  $f$ is a \defn{monomorphism} (\S7.32) if $mi = mj \Rightarrow i = j$ in
+    \[\xymatrix{C \ar@<1ex>[r]^{i} \ar@<-1ex>[r]_j & A \ar@{>->}[r]^m & B} \]
+  If $f$ and $g$ are monos, then so is $g \circ f$; if $g \circ f$ is mono,
+  then so is $f$. (\S7.34)
+
+  $f$ is a \defn{regular monomorphism} (\S7.56) if it is an equalizer of
+  some pair of morphisms.
+
+  $f : A \to B$ is a \defn{retraction} if $\exists_g . f \circ g = 1_B$.
+  If $f$ and $g$ are retractions, then so is $g \circ f$; if $g \circ f$
+  is a retraction, then so is $g$. (\S7.27)
+
+  $f : A \to B$ is a \defn{section} if $\exists_g . g \circ f = 1_A$.
+  (\S7.19)
+  If $f$ and $g$ are sections, then so is $g \circ f$;
+  if $g \circ f$ is a section, then so is $f$. (\S7.21)
+
+
+  Several morphism properties combine in useful ways:
+  \begin{itemize}
+    \item mono, epi $\Rightarrow$ \defn{bimorphism} (\S7.49)
+    \item retraction $\Rightarrow$ epi (\S7.42)
+    \item section, retraction $\Leftrightarrow$ isomorphism (\S7.26)
+    \item mono, retraction $\Leftrightarrow$ isomorphism (\S7.36)
+    \item section, epi $\Leftrightarrow$ isomorphism (\S7.43)
+    \item section $\Rightarrow$ regular mono (\S7.35; regular \S7.59.1)
+    \item regular mono $\Rightarrow$ extremal mono (\S7.59.2; extremal \S7.63)
+  \end{itemize}
+  (XXX stopped around 7.60; there's more to be said)
+
+\subsection{Arrows in Concrete Categoies}
+
+  For this section, $\mathbf{A}$ is a concrete category over $\mathbf{X}$.
+
+  $f \in \mathbf{A}$ is \defn{initial} if $\forall_{C \in \mathbf{A}}$ $UC
+  \overset{f \circ g}{\to} UB$ is an $\mathbf{A}$-morphism implies that $UC
+  \overset{g}{\to} UA$ is an $\mathbf{A}$-morphism.
 
 \section{Functors}
 
@@ -103,22 +212,34 @@ E. Strecker's {\em Abstract and Concrete Categories: The Joy of Cats}.
   A \defn{contravariant functor} $F : \mathbf{A} \to \mathbf{B}$ (\S3.20.5)
   is a functor from $\mathbf{A}^\text{op} \to \mathbf{B}$.
 
-  All functors preserve isomorphisms. (\S3.21)
-
   A functor is (\S3.27)
   \begin{itemize}
+    \item \defn{amnestic} if $f$ is an identity iff $Ff$ is an identity.
     \item an \defn{embedding} if it is injective on morphisms.
     \item \defn{faithful} if $\forall_{A,A'}$ the restriction $F\vert_{\mbox{hom}_A(A,A')}
       \subseteq \mbox{hom}(FA, FA')$ is injective.
     \item \defn{full} if said restrictions are surjective.
-    \item \defn{amnestic} if $f$ is an identity iff $Ff$ is an identity.
   \end{itemize}
 
   A functor $F : \mathbf{A} \to \mathbf{B}$ is (\S3.33)
   \begin{itemize}  
-    \item \defn{isomorphism-dense} if $\forall_B . \exists_A . F(A) \simeq B$.
     \item an \defn{equivalence} if it is full, faithful, and
       isomorphism-dense.
+    \item \defn{isomorphism-dense} if $\forall_B . \exists_A . F(A) \simeq B$.
   \end{itemize}
+
+  All functors preserve$\dots$
+    \begin{itemize}
+      \item isomorphisms. (\S3.21)
+      \item sections (\S7.22)
+      \item retractions (\S7.28)
+    \end{itemize}
+
+  All full, faithful functors reflect sections (\S7.23) and retractions
+  (\S7.29).
+
+  All representable functors preserve monos. (\S7.37.1)
+
+  Faithful functors reflect monos (\S7.37.2) and epis (7.44).
 
 \end{document}
