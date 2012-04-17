@@ -20,6 +20,8 @@
 \usepackage{multirow}
 \usepackage{hyperref}
 \usepackage{breakurl}
+\usepackage{enumitem}
+\setlist{nolistsep}
 
 \renewcommand{\baselinestretch}{0.9}
 
@@ -27,7 +29,22 @@
 %\newtheorem{dfn}{Def}[section]
 
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{3pt}
+\setlength{\parskip}{2pt}
+
+% http://www.latex-community.org/forum/viewtopic.php?f=46&t=3837&start=0#p15112
+\makeatletter
+\g@addto@macro\normalsize{%
+\setlength\abovedisplayskip{0pt}%
+\setlength\abovedisplayshortskip{0pt}%
+\setlength\belowdisplayskip{0pt}%
+\setlength\belowdisplayshortskip{0pt}%
+}
+\makeatother
+
+% http://comments.gmane.org/gmane.comp.tex.xy-pic/223
+% fixes {>->} having the tail overlap the item.
+\newdir{ >}{{}*!/-2.6667\jot/\dir{>}}
+
 
 %Scalable bracket-like
 \newcommand{\paren}[1]{\left({#1}\right)}
@@ -51,24 +68,28 @@
 \newcommand{\dyad}[2]{\left\lvert{#1}\middle\rangle\middle\langle{#2}\right\rvert}
 
 \DeclareMathOperator{\mm}{\mid\mid}
+\newcommand{\natto}{\overset{\cdot}{\to}}
 
 \newcommand{\defn}[1]{{\bf #1}}
 
 \begin{document}
 
-Notation and references are to Ji\v{r}\'i Ad\'amek, Horst Herrlich, George
+References are to Ji\v{r}\'i Ad\'amek, Horst Herrlich, George
 E. Strecker's {\em Abstract and Concrete Categories: The Joy of Cats}.
+Notation follows theirs with some contamination from Awodey and Pierce's
+texts.
 
 Entries within each section are roughly sorted by definition, alphabetically.
 
 \section{Basics}
 
-  A \defn{category} (\S3.1) is a quadruple
+  A \defn{category} $\mathbf{C}$ (\S3.1) is a quadruple
   $(\mathcal{O},\mbox{hom},id,\circ)$ with
   \begin{itemize}
     \item A collection of objects $\mathcal{O}$
-  \item For each object $A,B$, a (disjoint) collection of arrows
-    $\mbox{hom}(A,B)$ (from \defn{domain} to \defn{codomain}).
+  \item For each pair of objects $A,B$, a (disjoint) collection of arrows
+    from \defn{domain} $A$ to \defn{codomain} $B$,
+    $\mbox{hom}(A,B)$ (also written $\mathbf{C}(A,B)$).
     \item An associative arrow composition operator $\circ$.
     \item Identity arrows ($id_A$) on each object $A$, unit of $\circ$
   \end{itemize}
@@ -83,15 +104,11 @@ Entries within each section are roughly sorted by definition, alphabetically.
     \item If $PA$ and $A \simeq B$, then $PB$.
   \end{itemize}
 
-  In a concrete category $(\mathbf{A}, U)$ over $\mathbf{X}$, $(UA
-  \overset{f}{\to} UB) \in \mathbf{X}$ \defn{is an $\mathbf{A}$-morphism} if
-  $f$ has a unique $U$-preimage in $\mathbf{A}$. (\S5.3, \S6.22)
-
 \section{Predicates on Categories}
 
   A category is$\dots$
   \begin{itemize}
-    \item \defn{balanced} if all bimorphisms are isomorphisms (\S7.49.2)
+    \item \defn{balanced} if all bi are iso (\S7.49.2)
     \item \defn{discrete} if all morphisms are identities. (\S3.26.1)
     \item \defn{thin} if $\forall_{A,B} \mbox{hom}(A,B) \simeq \set{*}$. (\S3.26.2)
   \end{itemize}
@@ -105,19 +122,14 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
   $C$ is a \defn{coseparator} if $\forall_{f,g : B \to A} . f \ne g
   \Rightarrow \exists_{h : A \to C} . h \circ f \ne h \circ g$. (\S7.17)
-
-  An object $A$ in a concrete category $\mathbf{A}$ over $\mathbf{X}$ is
-  \dots\! if $\forall_{B \in \mathbf{A}}$, \dots is an $\mathbf{A}$ arrow.
-  \begin{itemize}
-    \item \defn{discrete}, $(UA \to UB)$ (\S8.1)
-    \item \defn{indiscrete}, $(UB \to UA)$ (\S8.3)
-  \end{itemize}
+  (Contrast monomorphism.)
 
   An object $0$ is \defn{initial} if $\forall_B . \exists! f_B : 0 \to B$.
   Initial objects are essentially unique. (\S7.1)
 
   $S$ is a \defn{separator} if $\forall_{f,g : A \to B} . f \ne g
   \Rightarrow \exists_{h : S \to A} . f \circ h \ne g \circ h$. (\S7.10)
+  (Contrast epimorphism.)
 
   $S$ is a separator iff $\mbox{hom}(S,-)$ is faithful. (\S7.12)
 
@@ -133,11 +145,11 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
 \section{Kinds of Arrows}
 
-  $e$ is an \defn{epimorphism} (\S7.39) if it is monic in $\mathbf{C}^{op}$,
-          {\it i.e.,} if $ie = je \Rightarrow i = j$ in
+  $e$ is an \defn{epimorphism} (\S7.39) (the dual of a monomorphism) if
+  $ie = je \Rightarrow i = j$ in
     \[\xymatrix{A \ar@{->>}[r]^e & B \ar@<1ex>[r]^{i} \ar@<-1ex>[r]_j & C} \]
   If $f$ and $g$ are epis, then so is $g \circ f$; if $g \circ f$ is epi,
-  then so is $g$. (\S7.41)
+  then so is $g$. (\S7.41)  Epis generalize \defn{surjection} 
 
   $(E,e)$ is an \defn{equalizer} (\S7.51) of $f,g$ iff $fe = ge$ and
      \[\forall_{Z,z . zf = zg} \exists!_u eu = z \quad
@@ -149,25 +161,33 @@ Entries within each section are roughly sorted by definition, alphabetically.
   A mono $m$ is a \defn{extremal} (\S7.61) if $e$ epic and
   $m = f \circ e$ implies that $e$ iso.
 
-  Let $G$ be a functor $\mathbf{A} \to \mathbf{B}$ and $B$ a
-  $\mathbf{B}$-object. A \defn{$G$-structured arrow with domain $B$}
-  is a pair $(f : B \to GA, A)$. (\S8.30)  It is
+  Let $G: \mathbf{A} \to \mathbf{B}$ and $B \in \mathbf{B}$.  A
+  \defn{$G$-structured arrow with domain $B$} is a pair $(f : B \to GA, A)$.
+  (\S8.30)  It is
   \begin{itemize}
     \item \defn{generating} if $\forall_{r,s : A \to A'} . Gr \circ f = Gs
       \circ f \implies r = s$
     \item \defn{extremally generating} if it is generating and $\forall_{m :
       A' \to A, m ~\text{mono}, (g,A')} . f = Gm \circ g \implies m ~\text{iso}$.
     \item \defn{$G$-universal for $B$} if $\forall_{(f', A')} .
-    \exists!_{\check f} . f' = G{\check f} \circ f$.
+    \exists!_{\check f} . f' = G{\check f} \circ f$.  That is,
+    \[\xymatrix{
+        B \ar[r]^f \ar@/_1.25pc/[rr]^{f'}
+        & GA \ar@{.>}[r]^{G{\check f}}
+        & GA'
+        & A \ar@{.>}[r]^{\check f}
+        & A'
+    }\]
   \end{itemize}
 
   $f : A \to B$ is an \defn{isomorphism} if $\exists!_g . f \circ g = id_B
     ~\wedge~ g \circ f = id_A$. (\S3.8; ! in \S3.11)
 
   $f$ is a \defn{monomorphism} (\S7.32) if $mi = mj \Rightarrow i = j$ in
-    \[\xymatrix{C \ar@<1ex>[r]^{i} \ar@<-1ex>[r]_j & A \ar@{>->}[r]^m & B} \]
+    \[\xymatrix{C \ar@<1ex>[r]^{i} \ar@<-1ex>[r]_j & A \ar@{{ >}->}[r]^m & B} \]
   If $f$ and $g$ are monos, then so is $g \circ f$; if $g \circ f$ is mono,
-  then so is $f$. (\S7.34)
+  then so is $f$. (\S7.34)  Monos generalize \defn{injection} in
+  $\mathbf{Set}$.
 
   $f$ is a \defn{regular monomorphism} (\S7.56) if it is an equalizer of
   some pair of morphisms.
@@ -181,65 +201,120 @@ Entries within each section are roughly sorted by definition, alphabetically.
   If $f$ and $g$ are sections, then so is $g \circ f$;
   if $g \circ f$ is a section, then so is $f$. (\S7.21)
 
-
   Several morphism properties combine in useful ways:
   \begin{itemize}
     \item mono, epi $\Rightarrow$ \defn{bimorphism} (\S7.49)
+    \item section $\Rightarrow$ regular mono (\S7.35, \S7.59.1)
+    \item regular mono $\Rightarrow$ extremal mono (\S7.59.2, \S7.63)
     \item retraction $\Rightarrow$ epi (\S7.42)
-    \item section, retraction $\Leftrightarrow$ isomorphism (\S7.26)
     \item mono, retraction $\Leftrightarrow$ isomorphism (\S7.36)
     \item section, epi $\Leftrightarrow$ isomorphism (\S7.43)
-    \item section $\Rightarrow$ regular mono (\S7.35; regular \S7.59.1)
-    \item regular mono $\Rightarrow$ extremal mono (\S7.59.2; extremal \S7.63)
   \end{itemize}
-  (XXX stopped around 7.60; there's more to be said)
-
-\subsection{Arrows in Concrete Categoies}
-
-  For this section, $\mathbf{A}$ is a concrete category over $\mathbf{X}$.
-
-  $f \in \mathbf{A}$ is \defn{initial} if $\forall_{C \in \mathbf{A}}$ $UC
-  \overset{f \circ g}{\to} UB$ is an $\mathbf{A}$-morphism implies that $UC
-  \overset{g}{\to} UA$ is an $\mathbf{A}$-morphism.
+  %(XXX stopped around \S7.60; there's more to be said)
 
 \section{Functors}
 
-  A \defn{(covariant) functor} $F : \mathbf{A} \to \mathbf{B}$ (\S3.17)
-  assigns to each $\mathbf{A}$-object a $\mathbf{B}$-object and to each
+  By default, functors $F,G : \mathbf{A} \to \mathbf{B}$.
+
+  A \defn{(covariant) functor} $F$ (\S3.17) assigns to each
+  $\mathbf{A}$-object a $\mathbf{B}$-object and to each
   $\mathbf{A}$-morphism a $\mathbf{B}$-morphism s.t. composition and
   identites are {\em preserved}.
 
-  A \defn{contravariant functor} $F : \mathbf{A} \to \mathbf{B}$ (\S3.20.5)
-  is a functor from $\mathbf{A}^\text{op} \to \mathbf{B}$.
+  A \defn{contravariant functor} $F$ (\S3.20.5) is a (covariant) functor
+  $\mathbf{A}^\text{op} \to \mathbf{B}$.
 
-  A functor is (\S3.27)
+  A \defn{endofunctor} has $\mathbf{A} = \mathbf{B}$.  $F \circ F$ may be
+  denoted $F^2$, etc. (\S3.23; ftn 15)
+
+  Functors compose. (\S3.23)
+
+  A functor $F$ is (\S3.27, \S3.33)
   \begin{itemize}
     \item \defn{amnestic} if $f$ is an identity iff $Ff$ is an identity.
-    \item an \defn{embedding} if it is injective on morphisms.
-    \item \defn{faithful} if $\forall_{A,A'}$ the restriction $F\vert_{\mbox{hom}_A(A,A')}
-      \subseteq \mbox{hom}(FA, FA')$ is injective.
-    \item \defn{full} if said restrictions are surjective.
-  \end{itemize}
-
-  A functor $F : \mathbf{A} \to \mathbf{B}$ is (\S3.33)
-  \begin{itemize}  
     \item an \defn{equivalence} if it is full, faithful, and
       isomorphism-dense.
+    \item an \defn{embedding} if it is injective on morphisms.
+    \item \defn{faithful} if $\forall_{A,A'} . F\vert_{\mathbf{A}(A,A')}
+      \subseteq \mathbf{B}(FA, FA')$ is injective.
+    \item \defn{full} if $\forall_{A,A'} . F\vert_{\mathbf{A}(A,A')}$ surjective.
     \item \defn{isomorphism-dense} if $\forall_B . \exists_A . F(A) \simeq B$.
   \end{itemize}
 
-  All functors preserve$\dots$
+  A \defn{natural transformation} $\tau : F \natto G$ assigns each
+  $A \in \mathbf{A}$ to $\tau_A : FA \to GA$ s.t.
+  $\forall_{f : A \to A'} . G f \circ \tau_A = \tau_{A'} \circ F f$. (\S6.1)
+
+  All functors \defn{preserve} (in $\mathbf{A}$ implies in $\mathbf{B}$)$\dots$
     \begin{itemize}
       \item isomorphisms. (\S3.21)
       \item sections (\S7.22)
       \item retractions (\S7.28)
     \end{itemize}
 
-  All full, faithful functors reflect sections (\S7.23) and retractions
-  (\S7.29).
+  Representable functors preserve monos. (\S7.37.1)
 
-  All representable functors preserve monos. (\S7.37.1)
+  Some functors \defn{reflect} (in $\mathbf{B}$ implies in $\mathbf{A}$) useful properties:
+  \begin{itemize}
+      \item Full, faithful functors reflect sections (\S7.23) and retractions (\S7.29).
+      \item Faithful functors reflect monos (\S7.37.2) and epis (7.44).
+  \end{itemize}
 
-  Faithful functors reflect monos (\S7.37.2) and epis (7.44).
+
+\section{Concrete Categories}
+
+  For this section, $\mathbf{A}$ is a concrete category over $\mathbf{X}$
+  with forgetful functor $U : \mathbf{A} \to \mathbf{X}$, denoted $(\mathbf{A}, U)$.
+
+  When $\mathbf{A} = \mathbf{X}$, $\mathbf{Alg}(U)$ has as objects
+  $U$-\defn{algebra}s $(X \in \mathbf{X}, h : UX \to X)$ and morphisms
+  $f : (X,h) \to (X',h')$ s.t. $f \circ h = h' \circ T(f)$. (\S5.37)
+
+  If $\mathbf{X}$ is $\mathbf{Set}$, $\mathbf{A}$ is a \defn{construct}.
+
+  $(UA \overset{f}{\to} UB) \in \mathbf{X}$ \defn{is an $\mathbf{A}$-morphism}
+  if $f$ has a unique $U$-preimage in $\mathbf{A}$. (\S5.3, \S6.22)
+
+  %An object $A\in\mathbf{A}$ is
+  %\dots\! if $\forall_{B \in \mathbf{A}}$, \dots is an $\mathbf{A}$ arrow.
+  %\begin{itemize}
+  %  \item \defn{discrete}, $(UA \to UB)$ (\S8.1)
+  %  \item \defn{indiscrete}, $(UB \to UA)$ (\S8.3)
+  %\end{itemize}
+
+  A \defn{free object} $A \in \mathbf{A}$ is one with a ($U$-structured)
+  universal arrow $(u,UA)$ in $B$. (\S8.22+\S8.30)
+
+  %$f \in \mathbf{A}$ is \defn{initial} if $\forall_{C \in \mathbf{A}}$ $UC
+  %\overset{f \circ g}{\to} UB$ is an $\mathbf{A}$-morphism implies that $UC
+  %\overset{g}{\to} UA$ is an $\mathbf{A}$-morphism.
+
+\section{Adjoints and Adjoint Situations}
+
+  A functor $G : \mathbf{A} \to \mathbf{B}$ is \defn{adjoint} if
+  $\forall_{B \in \mathbf{B}}$ there exists a $G$-structured universal
+  arrow with domain $B$.  (\S18.1)
+
+  Adjoints compose (\S8.5), preserve mono sources (\S8.6), and preserve
+  limits (\S8.9)
+
+  Given adjoint $G$ with $\eta_B : B \to G(A_B)$ the $G$-structured
+  universal arrow with domain $B$, $\exists!_F$ such that $FB = A_B$ and
+  $\eta : id_B \natto G \circ F$ is natural; further, there is a unique,
+  natural $\epsilon : F \circ G \natto id_A$ with $G\epsilon \circ \eta G =
+  id_G$ and $\epsilon F \circ F \eta = id_F$.  (\S19.1)
+
+  $(\eta,\epsilon) : F \dashv G : \mathbf{A} \to \mathbf{B}$ is a
+  \defn{adjoint situation} if the above relationships hold. (\S19.7)
+
+  A \defn{monad} on $\mathbf{X}$ is $(T : \mathbf{X} \to \mathbf{X},
+  \eta : id_{\mathbf{X}} \natto, \mu : T^2 \natto T)$ s.t.
+  \[\xymatrix@R=10pt{
+    T^3 \ar[r]^{T\mu} \ar[d]^{\mu T} & T^2 \ar[d]^\mu \\
+    T^2 \ar[r]^{\mu}                 & T
+  } \quad \xymatrix@R=10pt{
+    T \ar[r]^{T\eta} \ar[dr]_{id} & T^2 \ar[d]^\mu & T \ar[l]_{\eta T} \ar[dl]^{id} \\
+        & T & 
+  }\]
 
 \end{document}
