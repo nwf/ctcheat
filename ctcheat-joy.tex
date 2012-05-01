@@ -245,6 +245,10 @@ Entries within each section are roughly sorted by definition, alphabetically.
   $A \in \mathbf{A}$ to $\tau_A : FA \to GA$ s.t.
   $\forall_{f : A \to A'} . G f \circ \tau_A = \tau_{A'} \circ F f$. (\S6.1)
 
+  There is special notation for functors applied to natural transformations
+  and vice-versa (\S6.2): $(F\tau)_A = F(\tau_A)$ and $(\tau F)_A =
+  \tau_{FA}$.
+
   All functors \defn{preserve} (in $\mathbf{A}$ implies in $\mathbf{B}$)$\dots$
     \begin{itemize}
       \item isomorphisms. (\S3.21)
@@ -307,14 +311,15 @@ Entries within each section are roughly sorted by definition, alphabetically.
   $(\eta,\epsilon) : F \dashv G : \mathbf{A} \to \mathbf{B}$ is a
   \defn{adjoint situation} if the above relationships hold. (\S19.7)
 
-  A \defn{monad} on $\mathbf{X}$ is $(T : \mathbf{X} \to \mathbf{X},
-  \eta : id_{\mathbf{X}} \natto, \mu : T^2 \natto T)$ s.t.
-  \[\xymatrix@R=10pt{
-    T^3 \ar[r]^{T\mu} \ar[d]^{\mu T} & T^2 \ar[d]^\mu \\
-    T^2 \ar[r]^{\mu}                 & T
+  A \defn{monad} (\S20.1) on $\mathbf{X}$ is $(T : \mathbf{X} \to \mathbf{X},
+  \eta : id_{\mathbf{X}} \natto T, \mu : T^2 \natto T)$ s.t.
+  \[\forall_X \quad
+  \xymatrix@R=10pt{
+    T^3X \ar[r]^{T(\mu_X)} \ar[d]^{\mu_{TX}} & T^2X \ar[d]^{\mu_{X}} \\
+    T^2X \ar[r]^{\mu_X}                 & TX
   } \quad \xymatrix@R=10pt{
-    T \ar[r]^{T\eta} \ar[dr]_{id} & T^2 \ar[d]^\mu & T \ar[l]_{\eta T} \ar[dl]^{id} \\
-        & T & 
+    TX \ar[r]^{T(\eta_X)} \ar[dr]_{id_{TX}} & T^2X \ar[d]^{\mu_X} & TX \ar[l]_{\eta_{TX}} \ar[dl]^{id_{TX}} \\
+        & TX & 
   }\]
 
 \end{document}
