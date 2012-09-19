@@ -104,7 +104,6 @@ Entries within each section are roughly sorted by definition, alphabetically.
     \item If $PA$ and $A \simeq B$, then $PB$.
   \end{itemize}
 
-\section{Predicates on Categories}
 
   A category is$\dots$
   \begin{itemize}
@@ -112,11 +111,6 @@ Entries within each section are roughly sorted by definition, alphabetically.
     \item \defn{discrete} if all morphisms are identities. (\S3.26.1)
     \item \defn{thin} if $\forall_{A,B} \mbox{hom}(A,B) \simeq \set{*}$. (\S3.26.2)
   \end{itemize}
-
-  A \defn{concrete category} over $\mathbf{X}$ is a pair $(\mathbf{A},U :
-  \mathbf{A} \to \mathbf{X}$) with $U$ faithful. (\S5.1.1)
-
-  A \defn{construct} is a concrete category over $\mathbf{Set}$. (\S5.1.2)
 
 \section{Kinds of Objects}
 
@@ -264,17 +258,32 @@ Entries within each section are roughly sorted by definition, alphabetically.
       \item Faithful functors reflect monos (\S7.37.2) and epis (7.44).
   \end{itemize}
 
+\section{Sources and Sinks}
+
+  A \defn{source} in category $\mathbf{A}$ indexed by $I$ is a pair $(A,
+  \set{f_i : A \to A_i}_{i \in I})$.  This source has domain $A$ and
+  codomain $\set{A_i}_{i\in I}$. (\S10.1)
+
+  Given $(A,\set{f_i}_{i \in I})$ and
+  $\{(A_i,\set{g_{ij}}_{j \in J_i})\}_{i \in I}$
+  all sources, their \defn{composite} is $(A, \set{g_{ij} \circ f_i}_{i\in I,
+  j\in J_i})$. (\S10.3)
+
+  A \defn{mono-source} (\S10.5) is $(A,\set{f_i})$ s.t. \\ $\forall r,s: B \to A.
+  \brak{\forall_{i\in I} . f_i \circ r = f_i \circ s} \Rightarrow r = s$.
 
 \section{Concrete Categories}
 
-  For this section, $\mathbf{A}$ is a concrete category over $\mathbf{X}$
-  with forgetful functor $U : \mathbf{A} \to \mathbf{X}$, denoted $(\mathbf{A}, U)$.
+  For this section, $\mathbf{A}$ is a \defn{concrete category} over
+  $\mathbf{X}$ with \defn{forgetful} functor $U : \mathbf{A} \to \mathbf{X}$
+  faithful, denoted $(\mathbf{A}, U)$.  (\S5.1.1)
 
   When $\mathbf{A} = \mathbf{X}$, $\mathbf{Alg}(U)$ has as objects
   $U$-\defn{algebra}s $(X \in \mathbf{X}, h : UX \to X)$ and morphisms
   $f : (X,h) \to (X',h')$ s.t. $f \circ h = h' \circ T(f)$. (\S5.37)
 
   If $\mathbf{X}$ is $\mathbf{Set}$, $\mathbf{A}$ is a \defn{construct}.
+  (\S5.1.2)
 
   $(UA \overset{f}{\to} UB) \in \mathbf{X}$ \defn{is an $\mathbf{A}$-morphism}
   if $f$ has a unique $U$-preimage in $\mathbf{A}$. (\S5.3, \S6.22)
@@ -321,5 +330,15 @@ Entries within each section are roughly sorted by definition, alphabetically.
     TX \ar[r]^{T(\eta_X)} \ar[dr]_{id_{TX}} & T^2X \ar[d]^{\mu_X} & TX \ar[l]_{\eta_{TX}} \ar[dl]^{id_{TX}} \\
         & TX & 
   }\]
+
+
+\pagebreak\appendix\section{Examples To Jog Your Memory}
+
+\subsection{$\mathbf{Mon}$}
+
+  $(\set{*},\cdot,id_*)$ is a zero (both initial and terminal).
+
+  Mono-epics are not isos ($(\mathbf{N},+,0) \to (\mathbf{Z},+,0)$).
+  (Pierce:\S1.6.3)
 
 \end{document}
