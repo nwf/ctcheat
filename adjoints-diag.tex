@@ -1,0 +1,222 @@
+\documentclass[letterpaper]{article}
+\DeclareSymbolFont{AMSb}{U}{msb}{m}{n}
+\DeclareMathAlphabet{\mathbbm}{U}{bbm}{m}{n}
+
+\title{$\Sigma \dashv \Delta \dashv \Pi$}
+
+\usepackage{amsmath,amssymb,amsthm,latexsym}
+\usepackage{fancyhdr}
+\usepackage[tiny,center,compact,sc]{titlesec}
+\usepackage[cm]{fullpage}
+\usepackage{pstricks}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{bm}
+\usepackage{ifthen}
+\usepackage{epsfig}
+\usepackage[all]{xypic}
+\usepackage{textcomp}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{breakurl}
+
+\renewcommand{\baselinestretch}{0.9}
+
+%\newtheorem{thm}{Thm}[section]
+%\newtheorem{dfn}{Def}[section]
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+
+%Scalable bracket-like
+\newcommand{\paren}[1]{\left({#1}\right)}
+\newcommand{\brak}[1]{\left[{#1}\right]}
+\newcommand{\abs}[1]{\left\lvert{#1}\right\rvert}
+\newcommand{\ang}[1]{\left\langle{#1}\right\rangle}
+\newcommand{\set}[1]{\left\{#1\right\}}
+
+%Mathematics
+\newcommand{\condexp}[1]{\ifthenelse{\equal{#1}{false}}{}{^{#1}}}
+\newcommand{\dd}[3][false]{\frac{d\condexp{#1}{#2}}{d{#3}\condexp{#1}}}
+\newcommand{\pd}[3][false]{\frac{\partial\condexp{#1}{#2}}{\partial{#3}\condexp{#1}}}
+
+\newcommand{\ifrac}[2]{{#1}/{#2}}
+
+%Quantum Mechanics
+\newcommand{\ket}[1]{\left\lvert{#1}\right\rangle}
+\newcommand{\bra}[1]{\left\langle{#1}\right\rvert}
+\newcommand{\braket}[2]{\left\langle{#1}\middle\vert{#2}\right\rangle}
+\newcommand{\Braket}[3]{\left\langle{#1}\middle\vert{#2}\middle\vert{#3}\right\rangle}
+\newcommand{\dyad}[2]{\left\lvert{#1}\middle\rangle\middle\langle{#2}\right\rvert}
+
+\DeclareMathOperator{\mm}{\mid\mid}
+
+\newcommand{\defn}[1]{{\bf #1}}
+
+\begin{document}
+\maketitle
+
+\section{Getting Started}
+
+The ``diagonal functor'' $\Delta : \mathbf{C} \to \mathbf{C}^2$ is
+charmingly degenerate:
+$\Delta X = (X,X), \Delta (f : A \to B) = (f,f) : (A,A) \to (B,B)$.
+(In the ${}^2$ category, morphisms are such that $(f,g)(a,b) = (f a,g b)$.)
+For notational clarity, we'll use $A \times B$ for products within
+$\mathbf{C}$ and $(A,B)$ for objects in $\mathbf{C}^2$. 
+
+Define $\Pi_1 : \mathcal{C}^2 \to \mathcal{C}$ to be the first
+projector, and $\Pi_2$ the second.  If $\mathcal{C}$ has
+products, then we may define $\Pi : \mathcal{C}^2 \to \mathcal{C}$ as
+$(A,B) \mapsto A \times B$, and $\Pi_1 = \pi_1 \circ \Pi$.
+If $\mathcal{C}$ has coproducts, define $\Sigma : \mathcal{C}^2 \to
+\mathcal{C}$ by $(A,B) \mapsto A + B$.
+
+While on the topic of notation, recall that, if $\mathcal{C}$ is so
+equipped, we may form arrows involving products and coproducts from others:
+$\ang{f : A \to B,g : A \to C}(a) = (f a) \times (g a) \in B \times C$ and
+$\brak{f : A \to C,g : B \to C}((a : A) + (b : B)) \in C$ is case analysis.
+
+\section{Left Adjoint}
+\subsection{Unit}
+
+What would a left adjunction to $\Delta$ be?  It would be a functor $F :
+\mathcal{C}^2 \to \mathcal{C}$ and natural transformation $\eta$ where, in
+the category $\mathcal{C}^2$,
+\[ \xymatrix{
+	X \ar[r]^{\eta_X} \ar[rd]_{f} & \Delta (F X) \ar[d]^{\Delta (f^\#)} \\
+                                  & \Delta Y
+} \equiv \xymatrix {
+	X \ar[r]^(.4){\eta_X} \ar[rd]_{f} & (F X, F X) \ar[d]^{(f^\#, f^\#)} \\
+                                  & (Y, Y)
+} \equiv \xymatrix {
+	(A,B) \ar[r]^(.4){\eta_X} \ar[rd]_{f} & (F (A,B), F (A,B)) \ar[d]^{(f^\#, f^\#)} \\
+                                  & (Y, Y)
+}  \]
+
+
+If this diagram is to commute for all $f$, then: $\Pi_1 \circ f = \Pi_1
+\circ (f^\#, f^\#) \circ \eta_X = f^\# \circ \Pi_1 \circ \eta_X$, and
+similarly for the $\Pi_2$ component.  Intuitively, this can only work in the
+case where $f^\#$ is able to discriminate whether it has been handed the
+$\Pi_1$ or $\Pi_2$ projection of $\eta_X$'s output.  That sounds like a
+perfect use of coproducts!  If we take $\eta_X = (i_1, i_2): X
+\to \Delta (\Sigma X)$ (i.e. $\eta_X (x) = (i_1 x, i_2 x) : (A,B) \to (A +
+B, A + B)$) and define $f^\# = \brak{\Pi_1 \circ f, \Pi_2 \circ f}$, then we
+see that
+$f^\# \circ \Pi_1 \circ \eta_X =
+   \brak{\Pi_1 \circ f, \Pi_2 \circ f} \circ \Pi_1 \circ (i_1, i_2) =
+   \brak{\Pi_1 \circ f, \Pi_2 \circ f} \circ i_1 =
+   \Pi_1 \circ f
+$ as required.  Any such $f^\#$ is clearly unique.
+
+All that remains is to check that $\eta_X$ is natural from
+$I$ to $\Delta \Sigma$.  That is, does this commute for all $f : A \to
+B$?
+\[ \xymatrix{
+    A \ar[r]^{\eta_A} \ar[d]^f & \Delta \Sigma A \ar[d]^{\Delta \Sigma f} \\
+    B \ar[r]^{\eta_B} & \Delta \Sigma B \\
+} \equiv \xymatrix{
+    (A_1, A_2) \ar[r]^(.35){\eta_A} \ar[d]^{(f_1,f_2)} & (A_1 + A_2, A_1 + A_2)
+                                               \ar[d]^{(f_1 + f_2, f_1 + f_2)} \\
+    (B_1, B_2) \ar[r]^(.35){\eta_B}          & (B_1 + B_2, B_1 + B_2) \\
+} \]
+
+Well:
+\begin{align*}
+  \Delta \Sigma f \circ \eta_A
+    &= \paren{(f_1 + f_2), (f_1 + f_2)} \circ (i_1, i_2) & \text{defn}~\eta, \Delta, \Sigma \\
+    &= ((f_1 + f_2) \circ i_1, (f_1 + f_2) \circ i_2)    & \circ \\
+    &= (i_1 \circ f_1, i_2 \circ f_2)                    & (f + g) \circ i_1 = i_1 \circ f \\
+    &= (i_1, i_2) \circ (f_1,f_2)                        & \circ \\
+    &= \eta_B \circ f                                    & \text{defn}~\eta,f
+\end{align*}
+
+So we have: $\Sigma \dashv \Delta$.
+
+\subsection{Counit}
+
+Looking at this the other way, we have, in $\mathcal{C}$,
+\[ \xymatrix{
+	\Sigma (\Delta X) \ar[r]^{\epsilon_X} & X \\
+    \Sigma Y \ar[u]^{\Sigma f'} \ar[ur]_{f}
+} \equiv \xymatrix{
+	X + X \ar[r]^(.75){\epsilon_X} & X \\
+    Y_1 + Y_2 \ar[u]^{f'_1 + f'_2} \ar[ur]_{f}
+} \] 
+Then if we take $\eta_X = [id,id]$ we can define $f' = (f \circ i_1) + (f
+\circ i_2)$.  This is unique and $\eta_X$ is natural by inspection.
+
+\section{Right Adjoint}
+\subsection{Unit}
+
+What about the other way around?  Now we have, in $\mathcal{C}$ this time,
+\[ \xymatrix{
+	X \ar[r]^{\eta_X} \ar[rd]_{f} & G (X, X) \ar[d]^{G (f^\#)} \\
+                                  & G Y
+} \equiv \xymatrix {
+	X \ar[r]^{\eta_X} \ar[rd]_{f} & G (X, X) \ar[d]^{G (f^\#_1, f^\#_2)} \\
+                                  & G (Y_1, Y_2)
+}  \]
+
+Let's speculate that $G = \Pi_1$ and see what goes wrong.  That would mean
+that, for each $f : X \to Y$, there is some unique $f^\# : (X,X) \to (Y,Y')$
+such that $f = \Pi_1 f^\# \circ \eta_X$.  But that can't possibly be true, because
+given such a $f^\#$, one that differs only in its second component will also
+work, so we've violated the ``exists unique'' part of the definition.
+
+But if we take $G = \Pi$, then
+\[ \xymatrix{
+	X \ar[r]^{\eta_X} \ar[rd]_{f} & G (X, X) \ar[d]^{G (f^\#)} \\
+                                  & G Y
+} \equiv \xymatrix {
+	X \ar[r]^{\eta_X} \ar[rd]_{f} & G (X, X) \ar[d]^{G (f^\#_1, f^\#_2)} \\
+                                  & G (Y_1, Y_2)
+} \equiv \xymatrix {
+	X \ar[r]^{\eta_X} \ar[rd]_{f} & X \times X \ar[d]^{f^\#_1 \times f^\#_2} \\
+                                  & Y_1 \times Y_2
+}  \]
+And we can see that taking $\eta_X = \ang{id,id}$ and $f^\# = (\pi_1 \circ f)
+\times (\pi_2 \circ f)$ makes this commute with a unique $f^\#$ for each
+$f$.  $\eta_X$ is clearly natural.  Thus we have that $\Delta \dashv \Pi$.
+
+\subsection{Counit}
+
+Here the counit diagram takes place in $\mathcal{C}^2$:
+\[ \xymatrix{
+	\Delta (\Pi X) \ar[r]^{\epsilon_X} & X \\
+    \Delta Y \ar[u]^{\Delta f'} \ar[ur]_{f}
+} \equiv \xymatrix {
+	\Delta (\Pi (X_1,X_2)) \ar[r]^(.65){\epsilon_X} & (X_1, X_2) \\
+    \Delta Y \ar[u]^{\Delta f'} \ar[ur]_{f}
+} \equiv \xymatrix {
+	(X_1 \times X_2, X_1 \times X_2) \ar[r]^(.65){\epsilon_X} & (X_1, X_2) \\
+    (Y,Y) \ar[u]^{(f',f')} \ar[ur]_{(f_1,f_2)}
+}  \]
+
+Take $\eta_X = (\pi_1, \pi_2)$, then $f' = \ang{f_1, f_2}$.  Uniqueness of
+$f'$ is immediate.  Naturality of $\eta_X$ is immediate from the action of
+$\Delta\Pi$ on arrows:
+\[ \xymatrix{
+	(A \times B, A \times B) \ar[r] \ar[d]^{\Delta \Pi f} & (A, B) \ar[d]^{f} \\
+	(A' \times B', A' \times B') \ar[r] & (A', B')
+} \]
+$\Delta \Pi f = \Delta \Pi (f_1,f_2) = \Delta (f_1 \times f_2) = (f_1 \times
+f_2, f_1 \times f_2)$, and so
+$(\pi_1, \pi_2) \circ \Delta \Pi f = (\pi_1, \pi_2) \circ (f_1 \times
+f_2, f_1 \times f_2) = (f_1, f_2) = (f_1,f_2) \circ (\pi_1, \pi_2)$.
+
+\section{Notes}
+
+Note that for the unit of the left adjunction and the counit of the right
+adjunction, we had to choose ``non-obvious'' natural transformations,
+whereas for the other two we had things ``built from identities''.  In the
+former two cases, there are actually other functions which would work,
+notably $\eta_X = \ang{i_2, i_1}$ and $\epsilon_X = (\pi_2,\pi_1)$.
+
+$\Delta \dashv \Pi$ has some reading as ``diagonals are free products''
+though I do not find that terribly informative; I have yet to find
+``coproducts are free diagonals'' a useful statement at all.
+
+\end{document}
