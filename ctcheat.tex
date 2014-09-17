@@ -18,10 +18,19 @@
 \usepackage{textcomp}
 \usepackage{url}
 \usepackage{multirow}
-\usepackage{hyperref}
 \usepackage{breakurl}
 \usepackage{enumitem}
+\usepackage{etoolbox}
+\usepackage{hyperref}
 %\setlist{nolistsep}
+
+%http://tex.stackexchange.com/questions/126750/how-can-i-number-paragraphs-without-higher-level-counters
+\usepackage{chngcntr}
+\counterwithout{paragraph}{subsubsection}
+\renewcommand{\theparagraph}{{\tiny\P}{\small\arabic{paragraph}}}
+\titleformat{\paragraph}[runin]{\normalfont\bfseries}{\theparagraph}{\wordsep}{}
+\titlespacing{\paragraph}{0pt}{3.25ex plus 1ex minus .2ex}{\wordsep}
+\setcounter{secnumdepth}{4}
 
 \renewcommand{\baselinestretch}{0.9}
 
@@ -29,7 +38,7 @@
 %\newtheorem{dfn}{Def}[section]
 
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{5pt}
+\setlength{\parskip}{-2pt}
 
 % http://www.latex-community.org/forum/viewtopic.php?f=46&t=3837&start=0#p15112
 \makeatletter
@@ -70,7 +79,9 @@
 \DeclareMathOperator{\mm}{\mid\mid}
 \newcommand{\natto}{\overset{\cdot}{\to}}
 
-\newcommand{\defn}[1]{{\bf #1}}
+\newcommand{\defn}[2][]{{\ifstrempty{#1}{\label{defn:#2}}{\label{defn:#1}}{\bf #2}}}
+\newcommand\xrdefnhelper[1]{defn:#1}
+\newcommand{\xrdefn}[1]{\ref{\forcsvlist{\xrdefnhelper}{#1}}}
 
 \begin{document}
 
@@ -84,6 +95,8 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
 \section{Basics}
 
+  \paragraph{}
+  %
   A \defn{category} $\mathbf{C}$ (\S3.1) is a quadruple
   $(\mathcal{O},\mbox{hom},id,\circ)$ with
   \begin{itemize}
@@ -95,15 +108,21 @@ Entries within each section are roughly sorted by definition, alphabetically.
     \item Identity arrows ($id_A$) on each object $A$, unit of $\circ$
   \end{itemize}
 
+  \paragraph{}
+  %
   Categories may be described (Awodey:p21) as
      \[\xymatrix{ C_2 \ar[r]^\circ & C_1 \ar@<2ex>[r]_{cod} \ar@<-2ex>[r]_{dom} & C_0 \ar[l]^i }\]
 
+  \paragraph{}
+  %
   A category is (Awodey:p24-25,D1.11-12)\dots
     \begin{itemize}
       \item \defn{small} if $C_0$ and $C_1$ are sets and \defn{large} otherwise.
       \item \defn{locally small} if $\forall_{X,Y \in C_0} \mbox{hom}_C(X,Y) \subseteq C_1$ is a set.
     \end{itemize}
 
+  \paragraph{}
+  %
   A predicate $P$ is \defn{essentially unique} (\S7.3) if it is unique up to
   isomorphism:
   \begin{itemize}
@@ -111,14 +130,20 @@ Entries within each section are roughly sorted by definition, alphabetically.
     \item If $PA$ and $A \simeq B$, then $PB$.
   \end{itemize}
 
+  \paragraph{}
+  %
   $\mathbf{B}$ is a \defn{subcategory} of $\mathbf{A}$ if it has
   subcollections of objects and morphisms with identical composition and
   identity (\S4.1.1).  $\mathbf{B}$ is additionally \dots
   \begin{itemize}
-	\item \defn{full} if it has all morphisms from $\mathbf{A}$. (\S4.1.2) 
+	\item \defn[fullcat]{full} if it has all morphisms from $\mathbf{A}$
+	      between objects in $\mathbf{B}$. (\S4.1.2) 
 	\item \defn{reflective} if each $B$ has an $\mathbf{A}$-reflection. (\S4.16.2)
+	      \xrdefn{reflection}
   \end{itemize}
 
+  \paragraph{}
+  %
   A category is$\dots$
   \begin{itemize}
     \item \defn{balanced} if all bi are iso (\S7.49.2)
@@ -126,19 +151,55 @@ Entries within each section are roughly sorted by definition, alphabetically.
     \item \defn{thin} if $\forall_{A,B} \mbox{hom}(A,B) \simeq \set{*}$. (\S3.26.2)
   \end{itemize}
 
+\section{Derived Categories}
+
+  \paragraph{}
+  %
+  The \defn[conecat]{cone} category over a given diagram, $\mathbf{Cone}(D(J))$, has
+  as objects cones to that diagram and a morphism between cones is an arrow
+  $\phi : C \to C'$ s.t.  $\forall_{D_j \in D(J)} c_j^\prime \circ \phi =
+  c_j$.  \xrdefn{cone}
+
+  \paragraph{}
+  %
+  The \defn{dual} (\S3.5;Awodey:p15,i2) category $\mathbf{A}^\text{op}$
+  which exchanges domains and codomains of arrows in $\mathbf{A}$.  Any
+  statement implies its dual.
+
+  \paragraph{}
+  %
+  The \defn{arrow} (Awodey:p16,i3) category $\mathbf{C}^\to$ has arrows for
+  commutative squares in $\mathbf{C}$.  There are two functors
+  $\mathbf{cod}, \mathbf{dom} : \mathbf{C}^\to \to \mathbf{C}$.
+
+  \paragraph{}
+  %
+  The \defn{slice} (Awodey:p16,i4) category $\mathbf{C}/C$ has objects of
+  arrows in $\mathbf{C}$ with codomain $C$.  Arrows are tops of commutative
+  triangles.
+
 \section{Object Properties}
 
+  \paragraph{}
+  %
   $C$ is a \defn{coseparator} if $\forall_{f,g : B \to A} . f \ne g
   \Rightarrow \exists_{h : A \to C} . h \circ f \ne h \circ g$. (\S7.17)
   (Contrast monomorphism.)
 
+  \paragraph{}
+  %
   An object $0$ is \defn{initial} if $\forall_B . \exists! f_B : 0 \to B$.
   (\S7.1)
 
-  A \defn{limit} (Awodey:D5.16) of a diagram $D(J)$ is a
-  terminal object in the category $\mathbf{Cone}(D(J))$.  Written:
-  $c_i : (\varprojlim_{j} D_j) \to D_i$.
-
+  \paragraph{}
+  %
+  A \defn{limit} (Awodey:D5.16) of a diagram $D(J)$ is a terminal object in
+  the category $\mathbf{Cone}(D(J))$.  Written: $c_i : (\varprojlim_{j} D_j)
+  \to D_i$.  A \defn{colimit} (Awodey:\S5.6) is an initial object in the
+  category of cocones; $c_i : D_i \to (\varinjlim_j D_j)$. \xrdefn{cone}
+  
+  \paragraph{}
+  %
   $(A \times B,\pi_1,\pi_2)$ is a \defn{product} iff (UMP)
     \[\xymatrix{
     {}\save[]+<-1cm,0cm>*\txt<8pc>{$\forall_{Z,z_1,z_2} \exists!_u$\\$u\pi_1 = z_1 ~\wedge~ u\pi_2 = z_2$}\restore
@@ -146,6 +207,8 @@ Entries within each section are roughly sorted by definition, alphabetically.
     &    A & \ar[l]_{\pi_1} A \times B \ar[r]^{\pi_2} & B \\
     }\]
 
+  \paragraph{}
+  %
   $(P,p_1,p_2)$ is a \defn{pullback} (Awodey:p80,D5.4) of $f,g$ iff (UMP)
      \[\xymatrix{
      {}\save[]+<-1cm,0cm>*\txt<8pc>{$\forall_{Z,z_1,z_2 . fz_1 = gz_2}\exists!_u$\\$z_1 = p_1u ~\wedge~ z_2 = p_2u$}\restore
@@ -154,23 +217,33 @@ Entries within each section are roughly sorted by definition, alphabetically.
      }\]
      $P$ may be denoted $A \times_C B$ when $f,g$ are clear.
 
+  \paragraph{}
+  %
   $S$ is a \defn{separator} if $\forall_{f,g : A \to B} . f \ne g
   \Rightarrow \exists_{h : S \to A} . f \circ h \ne g \circ h$. (\S7.10)
   (Contrast epimorphism.)
   $S$ is a separator iff $\mbox{hom}(S,-)$ is faithful. (\S7.12)
 
+  \paragraph{}
+  %
   A set of objects $\mathcal{T}$ is a \defn{separating set} if
   $\forall_{f,g : A \to B} . f \ne g \Rightarrow \exists{S \in \mathcal{T},
   h : S \to A} . f \circ h \ne g \circ h$. (\S7.14)
 
+  \paragraph{}
+  %
   An object $1$ is \defn{terminal} if $\forall_A . \exists! f_A : A \to 1$.
   (\S7.4)
 
+  \paragraph{}
+  %
   An object that is both initial and terminal is called a \defn{zero}.
   (\S7.7)
 
 \section{Arrow Properties}
 
+  \paragraph{}
+  %
   $e$ is an \defn{epimorphism} (\S7.39) (the dual of a monomorphism)
   (equiv: is \defn{epic} (Awodey:D2.1)) if
   %
@@ -180,6 +253,8 @@ Entries within each section are roughly sorted by definition, alphabetically.
   then so is $g$. (\S7.41)  Epis generalize \defn{surjection} in
   $\mathbf{Set}$.
 
+  \paragraph{}
+  %
   $(E,e)$ is an \defn{equalizer} (\S7.51) of $f,g$ iff (UMP) $fe = ge$ and
      \[\forall_{Z,z . zf = zg} \exists!_u eu = z \quad
      \xymatrix{
@@ -187,11 +262,15 @@ Entries within each section are roughly sorted by definition, alphabetically.
      }\]
   Equalizers are essentially unique (\S7.53) and monic. % XXX Cite?
 
+  \paragraph{}
+  %
   A mono $m$ is a \defn{extremal} (\S7.61) if $e$ epic and
   $m = f \circ e$ implies that $e$ iso.
 
+  \paragraph{}
+  %
   Let $G: \mathbf{A} \to \mathbf{B}$ and $B \in \mathbf{B}$.  A
-  \defn{$G$-structured arrow with domain $B$} is a pair $(f : B \to GA, A)$.
+  \defn[gstrarr]{$G$-structured arrow with domain $B$} is a pair $(f : B \to GA, A)$.
   (\S8.30)  It is
   \begin{itemize}
     \item \defn{generating} if $\forall_{r,s : A \to A'} . Gr \circ f = Gs
@@ -211,10 +290,14 @@ Entries within each section are roughly sorted by definition, alphabetically.
   When $G$ is a subcategory inclusion, a $G$-structured universal arrow is
   a \defn{reflection} (\S4.16).
 
+  \paragraph{}
+  %
   $f : A \to B$ is an \defn{isomorphism} if $\exists!_g . f \circ g = id_B
   ~\wedge~ g \circ f = id_A$. (\S3.8; ! in \S3.11).  Every isomorphism
   is both monic and epic (Awodey:P2.6).
 
+  \paragraph{}
+  %
   $f$ is a \defn{monomorphism} (\S7.32) (equiv: is \defn{monic}
   (Awodey:D2.1)) if
     \[\xymatrix{\forall_{i,j} . mi = mj \Rightarrow i = j & C \ar@<1ex>[r]^{i} \ar@<-1ex>[r]_j & A \ar@{{ >}->}[r]^m & B} \]
@@ -223,21 +306,31 @@ Entries within each section are roughly sorted by definition, alphabetically.
   $\mathbf{Set}$.  Objects with monomorphisms to $X$ are called
   \defn{subobjects} of $X$ (Awodey:D5.1).
 
+  \paragraph{}
+  %
   A \defn{point} (Awodey:p32) of $C$ is any $c : 1 \to C$.
 
+  \paragraph{}
+  %
   $f$ is a \defn{regular monomorphism} (\S7.56) if it is an equalizer of
   some pair of morphisms.
 
+  \paragraph{}
+  %
   $f : A \to B$ is a \defn{retraction} if $\exists_g . f \circ g = 1_B$
   (\S7.24) aka \defn{split epi} (Awodey:D2.7).  If $f$ and $g$ are
   retractions, then so is $g \circ f$; if $g \circ f$ is a retraction, then
   so is $g$. (\S7.27)
 
+  \paragraph{}
+  %
   $f : A \to B$ is a \defn{section} if $\exists_g . g \circ f = 1_A$.
   (\S7.19) aka \defn{split mono} (Awodey:D2.7).
   If $f$ and $g$ are sections, then so is $g \circ f$;
   if $g \circ f$ is a section, then so is $f$. (\S7.21)
 
+  \paragraph{}
+  %
   Several morphism properties combine in useful ways:
   \begin{itemize}
     \item mono, epi $\Rightarrow$ \defn{bimorphism} (\S7.49)
@@ -251,6 +344,8 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
 \section{Exponentials}
 
+  \paragraph{}
+  %
   (Awodey:p107,D6.1) In a category with binary products, given two objects $B$ and $C$,
   their \defn{exponential} is an object $C^B$ and arrow $\epsilon : C^B \times B \to C$
   s.t.
@@ -262,44 +357,64 @@ Entries within each section are roughly sorted by definition, alphabetically.
      }\]
   The arrows $f$ and $\tilde f$ are ``exponential transposes.''
 
+  \paragraph{}
+  %
   Exponential transposition is self inverse (Awodey:p108).  This implies
     \[ \mbox{hom}_{\bf C}(A \times B, C) \simeq \mbox{hom}_{\bf C}(A, C^B) \]
 
+  \paragraph{}
+  %
   A category is \defn{cartesian closed} (Awodey:p108,D6.2) if it has all
   finite products and exponentials.
 
 \section{Functors}
 
+  \paragraph{}
+  %
   Default notation here: functors $F,G : \mathbf{A} \to \mathbf{B}$.
 
+  \paragraph{}
+  %
   A \defn{(covariant) functor} $F$ (\S3.17;Awodey:D1.2) assigns to each
   $\mathbf{A}$-object a $\mathbf{B}$-object and to each
   $\mathbf{A}$-morphism a $\mathbf{B}$-morphism s.t. composition and
   identites are {\em preserved}.
 
+  \paragraph{}
+  %
   A \defn{contravariant functor} $F$ (\S3.20.5) is a (covariant) functor
   $\mathbf{A}^\text{op} \to \mathbf{B}$.
 
+  \paragraph{}
+  %
   A \defn{diagram} (Awodey:D5.15) is a functor $D : J \to C$ from some
   indexing category $J$.
 
+  \paragraph{}
+  %
   A \defn{endofunctor} has $\mathbf{A} = \mathbf{B}$.  $F \circ F$ may be
   denoted $F^2$, etc. (\S3.23; ftn 15)
 
+  \paragraph{}
+  %
   Functors compose. (\S3.23)
 
   % XXX Cite
+  \paragraph{}
+  %
   A functor $F : C \to D$\dots
   \begin{itemize}
-    \item \defn{preserves limits of type $J$} if
+    \item \defn[fpresvlim]{preserves limits of type $J$} if
       \[ \forall_{D : J \to C}\forall_{\varprojlim_j D_j} F(\varprojlim_j D_j) \simeq \varprojlim_j F(D_j).\]
 
-    \item \defn{creates limits of type $J$} if $\forall_{D : J \to C}$
+    \item \defn[fcreatlim]{creates limits of type $J$} if $\forall_{D : J \to C}$
       and all limits $L = \varprojlim_j FD_j$ (i.e., bundle $p_j : L \to FD_j$ in $C'$),
       $\exists! (\bar{p_j} : \bar{L} \to D_j) \in C'$ with $F(\bar L) = L$, $F(\bar{p_j}) = p_j$,
       and $\bar L = \varprojlim_j D_j$. 
   \end{itemize}
 
+  \paragraph{}
+  %
   A functor $F$ is (\S3.27, \S3.33)
   \begin{itemize}
     \item \defn{amnestic} if $f$ is an identity iff $Ff$ is an identity.
@@ -309,10 +424,12 @@ Entries within each section are roughly sorted by definition, alphabetically.
     \item an \defn{embedding} if it is injective on morphisms.
     \item \defn{faithful} if $\forall_{A,A'} . F\vert_{\mathbf{A}(A,A')}
       \subseteq \mathbf{B}(FA, FA')$ is injective.
-    \item \defn{full} if $\forall_{A,A'} . F\vert_{\mathbf{A}(A,A')}$ surjective.
+    \item \defn[fullfunc]{full} if $\forall_{A,A'} . F\vert_{\mathbf{A}(A,A')}$ surjective.
     \item \defn{isomorphism-dense} if $\forall_B . \exists_A . F(A) \simeq B$.
   \end{itemize}
 
+  \paragraph{}
+  %
   A \defn{natural transformation} $\tau : F \natto G$ assigns each
   $A \in \mathbf{A}$ to $\tau_A : FA \to GA$ s.t.
   $\forall_{f : A \to A'} . G f \circ \tau_A = \tau_{A'} \circ F f$
@@ -324,14 +441,20 @@ Entries within each section are roughly sorted by definition, alphabetically.
       & FA \ar[r]^{\tau_A} \ar[d]_{Ff} & GA \ar[d]^{Gf} \\
       & FB \ar[r]^{\tau_B}             & GB} \]
 
+  \paragraph{}
+  %
   There is special notation for functors ($H$) applied to natural
   transformations and vice-versa (\S6.3): $H\tau : HF \natto HG$ defined by
   $(H\tau)_A = H(\tau_A)$ and $\tau H : FH \natto GH$ defined by $(\tau H)_A
   = \tau_{HA}$.
 
+  \paragraph{}
+  %
   All functors \defn{preserve} (in $\mathbf{A}$ implies in $\mathbf{B}$) 
   isomorphisms (\S3.21), sections (\S7.22), and retractions (\S7.28).
 
+  \paragraph{}
+  %
   Some functors \defn{reflect} (in $\mathbf{B}$ implies in $\mathbf{A}$) useful properties:
   \begin{itemize}
       \item Full, faithful functors reflect sections (\S7.23) and retractions (\S7.29).
@@ -340,12 +463,18 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
 \subsection{Special Functors}
 
+  \paragraph{}
+  %
   The \defn{covariant representable functor} (Awodey:p44) at $A \in
   \mathbf{C}$ is defined by $\mbox{Hom}(A,\text{---}) : \mathbf{C} \to
   \mathbf{Sets}$.   These functors are continuous (Awodey:P5.25).
 
+  \paragraph{}
+  %
   Representable functors preserve monos. (\S7.37.1)
 
+  \paragraph{}
+  %
   Pullback defines a functor
     \[ h^* : (A \stackrel{\alpha}{\to} C) \in \mathbf{C}/C
        \mapsto (C' \times_C A \stackrel{\alpha'}{\to} C') \in \mathbf{C}/C' \]
@@ -354,36 +483,52 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
 \section{Cones and Sources}
 
+  \paragraph{}
+  %
   A \defn{cone} (Awodey:D5.15) to a diagram $D(J)$ is a collection of arrows
   $c_j : C \to D_j$ s.t. $\forall_{D_\alpha \in D(J)} c_j = D_\alpha \circ
   c_i$.
 
+  \paragraph{}
+  %
   A \defn{source} in category $\mathbf{A}$ indexed by $I$ is a pair $(A,
   \set{f_i : A \to A_i}_{i \in I})$.  This source has domain $A$ and
   codomain $\set{A_i}_{i\in I}$. (\S10.1)
 
+  \paragraph{}
+  %
   Given $(A,\set{f_i}_{i \in I})$ and
   $\{(A_i,\set{g_{ij}}_{j \in J_i})\}_{i \in I}$
   all sources, their \defn{composite} is $(A, \set{g_{ij} \circ f_i}_{i\in I,
   j\in J_i})$. (\S10.3)
 
+  \paragraph{}
+  %
   A \defn{mono-source} (\S10.5) is $(A,\set{f_i})$ s.t. \\ $\forall r,s: B \to A.
   \brak{\forall_{i\in I} . f_i \circ r = f_i \circ s} \Rightarrow r = s$.
 
 \section{Concrete Categories}
 
+  \paragraph{}
+  %
   For this section, $\mathbf{A}$ is a \defn{concrete category} over
   $\mathbf{X}$ with \defn{forgetful} functor $U : \mathbf{A} \to \mathbf{X}$
   faithful, denoted $(\mathbf{A}, U)$.  (\S5.1.1)
 
+  \paragraph{}
+  %
   When $\mathbf{A} = \mathbf{X}$, $\mathbf{Alg}(U)$ has as objects
   $U$-\defn{algebra}s $(X \in \mathbf{X}, h : UX \to X)$ and morphisms
   $f : (X,h) \to (X',h')$ s.t. $f \circ h = h' \circ T(f)$. (\S5.37)
 
+  \paragraph{}
+  %
   If $\mathbf{X}$ is $\mathbf{Set}$, $\mathbf{A}$ is a \defn{construct}.
   (\S5.1.2)
 
-  $(UA \overset{f}{\to} UB) \in \mathbf{X}$ \defn{is an $\mathbf{A}$-morphism}
+  \paragraph{}
+  %
+  $(UA \overset{f}{\to} UB) \in \mathbf{X}$ \defn[Amporphism]{is an $\mathbf{A}$-morphism}
   if $f$ has a unique $U$-preimage in $\mathbf{A}$. (\S5.3, \S6.22)
 
   %An object $A\in\mathbf{A}$ is
@@ -393,6 +538,8 @@ Entries within each section are roughly sorted by definition, alphabetically.
   %  \item \defn{indiscrete}, $(UB \to UA)$ (\S8.3)
   %\end{itemize}
 
+  \paragraph{}
+  %
   A \defn{free object} $A \in \mathbf{A}$ is one with a ($U$-structured)
   universal arrow $(u,UA)$ in $B$. (\S8.22+\S8.30)
 
@@ -400,47 +547,38 @@ Entries within each section are roughly sorted by definition, alphabetically.
   %\overset{f \circ g}{\to} UB$ is an $\mathbf{A}$-morphism implies that $UC
   %\overset{g}{\to} UA$ is an $\mathbf{A}$-morphism.
 
-\section{Derived Categories}
-
-  The \defn{cone} category over a given diagram, $\mathbf{Cone}(D(J))$, has
-  as objects cones to that diagram and a morphism between cones is an arrow
-  $\phi : C \to C'$ s.t.  $\forall_{D_j \in D(J)} c_j^\prime \circ \phi =
-  c_j$.
-
-  The \defn{dual} (\S3.5;Awodey:p15,i2) category $\mathbf{A}^\text{op}$
-  which exchanges domains and codomains of arrows in $\mathbf{A}$.  Any
-  statement implies its dual.
-
-  The \defn{arrow} (Awodey:p16,i3) category $\mathbf{C}^\to$ has arrows for
-  commutative squares in $\mathbf{C}$.  There are two functors
-  $\mathbf{cod}, \mathbf{dom} : \mathbf{C}^\to \to \mathbf{C}$.
-
-  The \defn{slice} (Awodey:p16,i4) category $\mathbf{C}/C$ has objects of
-  arrows in $\mathbf{C}$ with codomain $C$.  Arrows are tops of commutative
-  triangles.
-
 \section{Adjoints and Adjoint Situations}
 
 \subsection{Joy Approach}
 
+  \paragraph{}
+  %
   A functor $G : \mathbf{A} \to \mathbf{B}$ is \defn{adjoint} if
   $\forall_{B \in \mathbf{B}}$ there exists a $G$-structured universal
   arrow with domain $B$.  (\S18.1)
 
+  \paragraph{}
+  %
   Adjoints compose (\S8.5), preserve mono sources (\S8.6), and preserve
   limits (\S8.9)
 
+  \paragraph{}
+  %
   Given adjoint $G$ with $\eta_B : B \to G(A_B)$ the $G$-structured
   universal arrow with domain $B$, $\exists!_F$ such that $FB = A_B$ and
   $\eta : id_B \natto G \circ F$ is natural; further, there is a unique,
   natural $\epsilon : F \circ G \natto id_A$ with $G\epsilon \circ \eta G =
   id_G$ and $\epsilon F \circ F \eta = id_F$.  (\S19.1)
 
+  \paragraph{}
+  %
   $(\eta,\epsilon) : F \dashv G : \mathbf{A} \to \mathbf{B}$ is a
   \defn{adjoint situation} if the above relationships hold. (\S19.7)
 
 \subsection{Awodey Approach}
 
+  \paragraph{}
+  %
   An \defn{adjunction} (Awodey:D9.1) of $F : C \to D$ and $G : D \to C$ is a natural
   transformation $\eta : I_C \stackrel{\cdot}{\to} (G\circ F)$ s.t.
   \[\xymatrix{
@@ -454,6 +592,8 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
 \subsection{Moving Right Along}
 
+  \paragraph{}
+  %
   A \defn{monad} (\S20.1) on $\mathbf{X}$ is $(T : \mathbf{X} \to \mathbf{X},
   \eta : id_{\mathbf{X}} \natto T, \mu : T^2 \natto T)$ s.t.
   \[\forall_X \quad
@@ -468,19 +608,27 @@ Entries within each section are roughly sorted by definition, alphabetically.
 \appendix
 \section{Miscellaneous Terminology}
 
+  \paragraph{}
+  %
   A category is \defn{finitely presented} (Awodey:p75) if it is the free
   category over a finite graph quotiented by a finite set of equations.
 
+  \paragraph{}
+  %
   The \defn{local membership relation} for generalized element $z : Z \to C$
   and subobject $M$ (i.e., with monic $m : M \to C$), $z \in_X M$, holds iff
   $\exists_{f:Z \to M} . z = mf$.
 
-  An \defn{$\omega$-complete Partial Order} ($\omega$CPO) is a Poset which
+  \paragraph{}
+  %
+  An \defn[wCPO]{$\omega$-complete Partial Order} ($\omega$CPO) is a Poset which
     has all {\em co}limits of type $(\mathbb{N},\le)$.  (All countably
     infinite ascending chains have a top.) (Awodey:p101,E5.33)
 
 \section{Miscellaneous Useful Properties}
 
+  \paragraph{}
+  %
   (Awodey:p84,L5.8) In the commuting diagram
     \[\xymatrix{ F \ar[r]_{f'} \ar[d]^{h''} & E \ar[r]_{g'} \ar[d]^{h'} & D \ar[d]^{h} \\
        A \ar[r]^f & B \ar[r]^g & C
@@ -490,8 +638,12 @@ Entries within each section are roughly sorted by definition, alphabetically.
       \item If $FDCA$ and $EDCB$ are pullbacks, so is $FEBA$.
     \end{enumerate}
 
+  \paragraph{}
+  %
   (Awodey:p84,C5.9) Pullbacks preserve commutative triangles.
 
+  \paragraph{}
+  %
   Universal Constructions (or Universal Mapping Properties, UMP) reduce to
   limits (Awodey:p91,E5.17-20):
   %
@@ -506,21 +658,31 @@ Entries within each section are roughly sorted by definition, alphabetically.
   	\hline
   \end{tabular}
 
+  \paragraph{}
+  %
   Objects defined by UCs are unique up to isomorphism.
 
 \section{Examples To Jog Your Memory}
 
 \subsection{$\mathbf{Mon}$}
 
+  \paragraph{}
+  %
   Mono-epics are not isos ($(\mathbf{N},+,0) \to (\mathbf{Z},+,0)$).
   (Pierce:\S1.6.3)
 
+  \paragraph{}
+  %
   $(\set{*},\cdot,*)$ is a (the) zero.
 
+  \paragraph{}
+  %
   Each monoid $M$ has only one point, $1 \to M$.
 
 \subsection{Adjoint Situations and Monads}
 
+  \paragraph{}
+  %
   Consider $(\eta, \epsilon) : F \dashv G : \mathbf{Mon} \to \mathbf{Set}$.
   $\eta_X : X \to GFX$ is insertion of generators: $\forall x \in X . \eta_X x = x$.
   $\epsilon_Y : FGY \to Y$ is the re-introduction of structure;
@@ -530,6 +692,8 @@ Entries within each section are roughly sorted by definition, alphabetically.
       \quad \epsilon_Y (y \in GY)  =  y
     \]
 
+  \paragraph{}
+  %
   Further, $T = G \circ F$ is a monad.  Generically, $\mu$...
   \begin{align*}
     \mu_X (TTX) &= (G \epsilon F)_X (TTX) = (G \epsilon_{FX}) (GFGFX) \\
