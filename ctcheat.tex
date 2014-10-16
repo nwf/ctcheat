@@ -243,6 +243,14 @@ Entries within each section are roughly sorted by definition, alphabetically.
 \section{Arrow Properties}
 
   \paragraph{}
+  $(Q,q)$ is a \defn{coequalizer} (\S7.51) of $f,g$ iff (UMP) $qf = qg$ and
+     \[\forall_{Z,z . zf = zg} \exists!_u uq = z \quad
+     \xymatrix{
+     Z & Q \ar@{..>}[l]^u & B \ar[l]^q \ar@/^1pc/[ll]^{z} & A \ar@<1ex>[l]^f \ar@<-1ex>[l]_g
+     }\]
+  Coequalizers are essentially unique (\S7.70.1) and epic (\S7.71,\S7.75.2).
+
+  \paragraph{}
   %
   $e$ is an \defn{epimorphism} (\S7.39) (the dual of a monomorphism)
   (equiv: is \defn{epic} (Awodey:D2.1)) if
@@ -250,17 +258,16 @@ Entries within each section are roughly sorted by definition, alphabetically.
     \[\xymatrix{\forall_{i,j} . ie = je \Rightarrow i = j & A \ar@{->>}[r]^e & B \ar@<1ex>[r]^{i} \ar@<-1ex>[r]_j & C} \]
   %
   If $f$ and $g$ are epis, then so is $g \circ f$; if $g \circ f$ is epi,
-  then so is $g$. (\S7.41)  Epis generalize \defn{surjection} in
-  $\mathbf{Set}$.
+  then so is $g$. (\S7.41)
 
   \paragraph{}
   %
   $(E,e)$ is an \defn{equalizer} (\S7.51) of $f,g$ iff (UMP) $fe = ge$ and
-     \[\forall_{Z,z . zf = zg} \exists!_u eu = z \quad
+     \[\forall_{Z,z . fz = gz} \exists!_u eu = z \quad
      \xymatrix{
      Z \ar@{..>}[r]^u \ar@/_1pc/[rr]^{z} & E \ar[r]^e & A \ar@<1ex>[r]^f \ar@<-1ex>[r]_g & B \\
      }\]
-  Equalizers are essentially unique (\S7.53) and monic. % XXX Cite?
+  Equalizers are essentially unique (\S7.53) and monic (\S7.56,\S7.59.2).
 
   \paragraph{}
   %
@@ -302,8 +309,7 @@ Entries within each section are roughly sorted by definition, alphabetically.
   (Awodey:D2.1)) if
     \[\xymatrix{\forall_{i,j} . mi = mj \Rightarrow i = j & C \ar@<1ex>[r]^{i} \ar@<-1ex>[r]_j & A \ar@{{ >}->}[r]^m & B} \]
   If $f$ and $g$ are monos, then so is $g \circ f$; if $g \circ f$ is mono,
-  then so is $f$. (\S7.34)  Monos generalize \defn{injection} in
-  $\mathbf{Set}$.  Objects with monomorphisms to $X$ are called
+  then so is $f$. (\S7.34)  Objects with monomorphisms to $X$ are called
   \defn{subobjects} of $X$ (Awodey:D5.1).
 
   \paragraph{}
@@ -663,6 +669,19 @@ Entries within each section are roughly sorted by definition, alphabetically.
   Objects defined by UCs are unique up to isomorphism.
 
 \section{Examples To Jog Your Memory}
+
+\subsection{$\mathbf{Set}$}
+
+  \paragraph{} Epic is surjective, monic is injective.
+
+  \paragraph{}
+  Coequalizers correspond to equivalence classes (\S7.69.1): Let $\sim$ be
+  {\em the smallest} eq. rel. s.t. $\forall_{a \in A} . f(a) \sim g(a)$;
+  then $(Q,q) = (B/\sim, b \mapsto \brak{b}_\sim)$ is a coequalizer of $f$
+  and $g$.
+
+  \paragraph{}
+  Equalizers: $(E,e) = (\set{x \mid f(x) = g(x)} \subseteq X, \subseteq)$.
 
 \subsection{$\mathbf{Mon}$}
 
