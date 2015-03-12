@@ -1,27 +1,38 @@
+% Header <<<
+\RequirePackage[l2tabu,orthodox]{nag}
+\RequirePackage{fixltx2e}
+
 \documentclass[10pt,twocolumn,letterpaper]{article}
 \DeclareSymbolFont{AMSb}{U}{msb}{m}{n}
 \DeclareMathAlphabet{\mathbbm}{U}{bbm}{m}{n}
 \title{Category Theory Cheat Sheet}
 %\author{Nathaniel Wesley Filardo}
 
+\usepackage{xparse}
 \usepackage{amsmath,amssymb,amsthm,latexsym}
 \usepackage{fancyhdr}
-\usepackage[tiny,center,compact,sc]{titlesec}
+\usepackage{titlesec} % [tiny,center,compact,sc] 
 \usepackage[cm]{fullpage}
 \usepackage{pstricks}
 \usepackage{graphicx}
 \usepackage{verbatim}
 \usepackage{bm}
 \usepackage{ifthen}
-\usepackage{epsfig}
 \usepackage[all]{xypic}
 \usepackage{textcomp}
 \usepackage{url}
 \usepackage{multirow}
-\usepackage{breakurl}
 \usepackage{enumitem}
 \usepackage{etoolbox}
 \usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+\usepackage{makeidx}\makeindex
+
 %\setlist{nolistsep}
 
 %http://tex.stackexchange.com/questions/126750/how-can-i-number-paragraphs-without-higher-level-counters
@@ -79,21 +90,32 @@
 \DeclareMathOperator{\mm}{\mid\mid}
 \newcommand{\natto}{\overset{\cdot}{\to}}
 
-\newcommand{\defn}[2][]{{\ifstrempty{#1}{\label{defn:#2}}{\label{defn:#1}}{\bf #2}}}
+\newcommand{\defnref}[3][]{\ifstrempty{#1}{\ref{defn:#2}}{\ref{defn:#1}}}
+\DeclareDocumentCommand{\defn}{ O{} D<>{} m }{%
+  {\ifstrempty{#1}%
+    {\label{defn:#3}}%
+	{\label{defn:#1}}%
+   \ifstrempty{#2}%
+    {\index{#3|defnref[#1]{#3}}\bfseries #3}%
+    {\index{#2#3|defnref[#1]{#3}}\bfseries #3}}%
+}
 \newcommand\xrdefnhelper[1]{defn:#1}
 \newcommand{\xrdefn}[1]{\ref{\forcsvlist{\xrdefnhelper}{#1}}}
-
+\newcommand{\hrdefn}[2][]{\ifstrempty{#1}{\hyperref[defn:#2]{#2}[\ref{defn:#2}]}
+                                         {\hyperref[defn:#1]{#2}[\ref{defn:#1}]}} 
 \begin{document}
-
-Unless otherwise notated, references are to Ji\v{r}\'i Ad\'amek, Horst
-Herrlich, George E. Strecker's \textit{Abstract and Concrete Categories: The
-Joy of Cats}.  Notation follows theirs with some contamination from Awodey's
-\textit{Category Theory} and Pierce's \textit{Basic Category Theory for
-Computer Scientists}.
+%>>>
+% Intro <<<
+Unless otherwise notated, references are to \textit{Abstract and Concrete
+Categories: The Joy of Cats}, \cite{adamek:joy}.  Notation follows theirs
+with some contamination from Awodey's \textit{Category Theory},
+\cite{awodey:ct}, and Pierce's \textit{Basic Category Theory for Computer
+Scientists}, \cite{pierce:basicct}.
 
 Entries within each section are roughly sorted by definition, alphabetically.
 
-\section{Basics}
+%>>>
+\section{Basics} % <<<
 
   \paragraph{}
   %
@@ -151,20 +173,8 @@ Entries within each section are roughly sorted by definition, alphabetically.
     \item \defn{thin} if $\forall_{A,B} \mbox{hom}(A,B) \simeq \set{*}$. (\S3.26.2)
   \end{itemize}
 
-\section{Derived Categories}
-
-  \paragraph{}
-  %
-  The \defn[conecat]{cone} category over a given diagram, $\mathbf{Cone}(D(J))$, has
-  as objects cones to that diagram and a morphism between cones is an arrow
-  $\phi : C \to C'$ s.t.  $\forall_{D_j \in D(J)} c_j^\prime \circ \phi =
-  c_j$.  \xrdefn{cone}
-
-  \paragraph{}
-  %
-  The \defn{dual} (\S3.5;Awodey:p15,i2) category $\mathbf{A}^\text{op}$
-  which exchanges domains and codomains of arrows in $\mathbf{A}$.  Any
-  statement implies its dual.
+% >>>
+\section{Derived Categories} % <<<
 
   \paragraph{}
   %
@@ -174,11 +184,25 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
   \paragraph{}
   %
+  The \defn[conecat]{cone} category over a given diagram,
+  $\mathbf{Cone}(D(J))$, has as objects \hrdefn[cone]{cones} to that diagram
+  and a morphism between cones is an arrow $\phi : C \to C'$ s.t.
+  $\forall_{D_j \in D(J)} c_j^\prime \circ \phi = c_j$.
+
+  \paragraph{}
+  %
+  The \defn{dual} (\S3.5;Awodey:p15,i2) category $\mathbf{A}^\text{op}$
+  which exchanges domains and codomains of arrows in $\mathbf{A}$.  Any
+  purely-categorical statement implies its dual.
+
+  \paragraph{}
+  %
   The \defn{slice} (Awodey:p16,i4) category $\mathbf{C}/C$ has objects of
   arrows in $\mathbf{C}$ with codomain $C$.  Arrows are tops of commutative
   triangles.
 
-\section{Object Properties}
+% >>>
+\section{Object Properties} % <<<
 
   \paragraph{}
   %
@@ -206,6 +230,15 @@ Entries within each section are roughly sorted by definition, alphabetically.
     &      & Z \ar[dl]_{z_1} \ar[dr]^{z_2} \ar@{..>}[d]^u & \\
     &    A & \ar[l]_{\pi_1} A \times B \ar[r]^{\pi_2} & B \\
     }\]
+
+ \paragraph{}
+  %
+  The \defn{product category} $\mathbf{C} \times \mathbf{D}$ of two
+  categories $\mathbf{C}$ and $\mathbf{D}$ consists of objects which are
+  each an ordered pair of an object from $\mathbf{C}$ and one from
+  $\mathbf{D}$; morphisms are, similarly, pairs of morphisms from
+  $\mathbf{C}$ and $\mathbf{D}$.  This sense of $\times$ is itself the
+  trivial \hrdefn{bifunctor}.
 
   \paragraph{}
   %
@@ -240,7 +273,8 @@ Entries within each section are roughly sorted by definition, alphabetically.
   An object that is both initial and terminal is called a \defn{zero}.
   (\S7.7)
 
-\section{Arrow Properties}
+% >>>
+\section{Arrow Properties} % <<<
 
   \paragraph{}
   $(Q,q)$ is a \defn{coequalizer} (\S7.51) of $f,g$ iff (UMP) $qf = qg$ and
@@ -277,14 +311,20 @@ Entries within each section are roughly sorted by definition, alphabetically.
   \paragraph{}
   %
   Let $G: \mathbf{A} \to \mathbf{B}$ and $B \in \mathbf{B}$.  A
-  \defn[gstrarr]{$G$-structured arrow with domain $B$} is a pair $(f : B \to GA, A)$.
-  (\S8.30)  It is
+  \defn[gstrarr]<@G-structured arrow with domain B> {$G$-structured arrow
+  with domain $B$} is a pair $(f : B \to GA, A)$.  (\S8.30)  It is
+  %
   \begin{itemize}
+    %
     \item \defn{generating} if $\forall_{r,s : A \to A'} . Gr \circ f = Gs
       \circ f \implies r = s$
+	%
     \item \defn{extremally generating} if it is generating and $\forall_{m :
       A' \to A, m ~\text{mono}, (g,A')} . f = Gm \circ g \implies m ~\text{iso}$.
-    \item \defn{$G$-universal for $B$} if $\forall_{(f', A')} .
+	%
+	\item \defn[gunivarr]<@G-universal for B>{$G$-universal for $B$} if
+	$\forall_{(f', A')} .
+	%
     \exists!_{\check f} . f' = G{\check f} \circ f$.  That is,
     \[\xymatrix{
         B \ar[r]^f \ar@/_1.25pc/[rr]^{f'}
@@ -348,7 +388,8 @@ Entries within each section are roughly sorted by definition, alphabetically.
   \end{itemize}
   %(XXX stopped around \S7.60; there's more to be said)
 
-\section{Exponentials}
+% >>>
+\section{Exponentials} % <<<
 
   \paragraph{}
   %
@@ -366,14 +407,23 @@ Entries within each section are roughly sorted by definition, alphabetically.
   \paragraph{}
   %
   Exponential transposition is self inverse (Awodey:p108).  This implies
-    \[ \mbox{hom}_{\bf C}(A \times B, C) \simeq \mbox{hom}_{\bf C}(A, C^B) \]
+    \[ \mbox{hom}_{\mathbf{C}}(A \times B, C) \simeq \mbox{hom}_{\mathbf{C}}(A, C^B) \]
+
+  \paragraph{}
+  %
+  The \defn{exponential category} $\mathbf{D}^\mathbf{C}$ has as objects
+  \hrdefn[functor]{functors} from $\mathbf{C}$ to $\mathbf{D}$ and as
+  morphisms the \hrdefn[nattrans]{natural transformations} between these
+  functors.
 
   \paragraph{}
   %
   A category is \defn{cartesian closed} (Awodey:p108,D6.2) if it has all
   finite products and exponentials.
 
-\section{Functors}
+% >>>
+\section{Functors} % <<<
+% Basics <<<
 
   \paragraph{}
   %
@@ -381,14 +431,14 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
   \paragraph{}
   %
-  A \defn{(covariant) functor} $F$ (\S3.17;Awodey:D1.2) assigns to each
-  $\mathbf{A}$-object a $\mathbf{B}$-object and to each
-  $\mathbf{A}$-morphism a $\mathbf{B}$-morphism s.t. composition and
-  identites are {\em preserved}.
+  A \defn{covariant functor} (or just \defn{functor}) $F$
+  (\S3.17;Awodey:D1.2) assigns to each $\mathbf{A}$-object a
+  $\mathbf{B}$-object and to each $\mathbf{A}$-morphism a
+  $\mathbf{B}$-morphism s.t. composition and identites are {\em preserved}.
 
   \paragraph{}
   %
-  A \defn{contravariant functor} $F$ (\S3.20.5) is a (covariant) functor
+  A \defn[contrafunc]{contravariant functor} $F$ (\S3.20.5) is a (covariant) functor
   $\mathbf{A}^\text{op} \to \mathbf{B}$.
 
   \paragraph{}
@@ -421,6 +471,14 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
   \paragraph{}
   %
+  A (covariant) \defn{bifunctor} is a functor from a \hrdefn{product
+  category} such that each partial application is {\em also} a functor.
+  (See \cite{hinze:f} and bifunctors.tex for more.) A \defn{profunctor} is a
+  bifunctor which is \hrdefn[contrafunc]{contravariant} in one argument and
+  covariant in the other.
+
+  \paragraph{}
+  %
   A functor $F$ is (\S3.27, \S3.33)
   \begin{itemize}
     \item \defn{amnestic} if $f$ is an identity iff $Ff$ is an identity.
@@ -436,26 +494,6 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
   \paragraph{}
   %
-  A \defn{natural transformation} $\tau : F \natto G$ assigns each
-  $A \in \mathbf{A}$ to $\tau_A : FA \to GA$ s.t.
-  $\forall_{f : A \to A'} . G f \circ \tau_A = \tau_{A'} \circ F f$
-  (\S6.1;Awodey:D7.6).
-  That is,
-  %
-  \[\xymatrix{
-     {}\save[]+<-1cm,0cm>*\txt<8pc>{$\forall_{A,B,f \in C}$\\$Gf\circ \tau_A = \tau_B\circ Ff$}\restore
-      & FA \ar[r]^{\tau_A} \ar[d]_{Ff} & GA \ar[d]^{Gf} \\
-      & FB \ar[r]^{\tau_B}             & GB} \]
-
-  \paragraph{}
-  %
-  There is special notation for functors ($H$) applied to natural
-  transformations and vice-versa (\S6.3): $H\tau : HF \natto HG$ defined by
-  $(H\tau)_A = H(\tau_A)$ and $\tau H : FH \natto GH$ defined by $(\tau H)_A
-  = \tau_{HA}$.
-
-  \paragraph{}
-  %
   All functors \defn{preserve} (in $\mathbf{A}$ implies in $\mathbf{B}$) 
   isomorphisms (\S3.21), sections (\S7.22), and retractions (\S7.28).
 
@@ -467,7 +505,47 @@ Entries within each section are roughly sorted by definition, alphabetically.
       \item Faithful functors reflect monos (\S7.37.2) and epis (\S7.44).
   \end{itemize}
 
-\subsection{Special Functors}
+% >>>
+\subsection{Transformations} % <<<
+
+  \paragraph{}
+  %
+  A \defn[nattrans]{natural transformation} $\tau : F \natto G$ assigns each
+  $A \in \mathbf{A}$ to $\tau_A : FA \to GA$ s.t.
+  $\forall_{f : A \to A'} . G f \circ \tau_A = \tau_{A'} \circ F f$
+  (\S6.1;Awodey:D7.6).
+  That is,
+  %
+  \[\xymatrix{
+     {}\save[]+<-1cm,0cm>*\txt<8pc>{$\forall_{A,B,f \in C}$\\$Gf\circ \tau_A = \tau_B\circ Ff$}\restore
+      & FA \ar[r]^{\tau_A} \ar[d]_{Ff} & GA \ar[d]^{Gf} \\
+      & FB \ar[r]^{\tau_B}             & GB} \]
+  %
+  More generally, given any functor from a \hrdefn{product category}, we may
+  say that it is natural in the $i$-th position if, for all ways of fixing
+  the other positions, the resulting partial applications form natural
+  transformations.
+
+  \paragraph{}
+  %
+  There is special notation for functors ($H$) applied to natural
+  transformations and vice-versa (\S6.3): $H\tau : HF \natto HG$ defined by
+  $(H\tau)_A = H(\tau_A)$ and $\tau H : FH \natto GH$ defined by $(\tau H)_A
+  = \tau_{HA}$.
+
+%  XXX Not yet
+%  \paragraph{}
+%  %
+%  A \defn[exttrans]{extranatural transformation} is one where
+
+% >>>
+\subsection{Special Functors} % <<<
+
+  \paragraph{}
+  %
+  For every category $\mathbf{C}$ and object $D \in \mathbf{D}$ there is
+  a unique \defn{constant functor} $\mathbf{!}_D$ which sends every
+  $C$ to $D$ and every $f$ to $1_D$.
 
   \paragraph{}
   %
@@ -486,14 +564,19 @@ Entries within each section are roughly sorted by definition, alphabetically.
        \mapsto (C' \times_C A \stackrel{\alpha'}{\to} C') \in \mathbf{C}/C' \]
     where $\alpha'$ is the pullback of $\alpha$ along $h$. (Awodey:P5.10)
 
-
-\section{Cones and Sources}
+% >>>
+% >>>
+\section{Cones and Sources} % <<<
 
   \paragraph{}
   %
   A \defn{cone} (Awodey:D5.15) to a diagram $D(J)$ is a collection of arrows
   $c_j : C \to D_j$ s.t. $\forall_{D_\alpha \in D(J)} c_j = D_\alpha \circ
-  c_i$.
+  c_i$.  (Cones are also \hrdefn[nattrans]{natural
+  transformations} from the \hrdefn{constant functor} to the inclusion
+  functor of the diagram $D$. \cite{milewski:limits})  (Cones are
+  \hrdefn[source]{sources} subject to commutation diagrams implied by the
+  diagram.)
 
   \paragraph{}
   %
@@ -513,19 +596,27 @@ Entries within each section are roughly sorted by definition, alphabetically.
   A \defn{mono-source} (\S10.5) is $(A,\set{f_i})$ s.t. \\ $\forall r,s: B \to A.
   \brak{\forall_{i\in I} . f_i \circ r = f_i \circ s} \Rightarrow r = s$.
 
-\section{Concrete Categories}
+% >>>
+% \section{Ends} % <<<
+% XXX not yet 
+%   \paragraph{}
+%   %
+%   
+% 
+% >>>
+\section{Concrete Categories} % <<<
 
   \paragraph{}
   %
   For this section, $\mathbf{A}$ is a \defn{concrete category} over
-  $\mathbf{X}$ with \defn{forgetful} functor $U : \mathbf{A} \to \mathbf{X}$
-  faithful, denoted $(\mathbf{A}, U)$.  (\S5.1.1)
+  $\mathbf{X}$ with \defn{forgetful} \hrdefn{functor} $U : \mathbf{A} \to
+  \mathbf{X}$ \hrdefn{faithful}, denoted $(\mathbf{A}, U)$.  (\S5.1.1)
 
   \paragraph{}
   %
-  When $\mathbf{A} = \mathbf{X}$, $\mathbf{Alg}(U)$ has as objects
-  $U$-\defn{algebra}s $(X \in \mathbf{X}, h : UX \to X)$ and morphisms
-  $f : (X,h) \to (X',h')$ s.t. $f \circ h = h' \circ T(f)$. (\S5.37)
+  When $\mathbf{A} = \mathbf{X}$, $\mathbf{Alg}(U)$ has
+  \hrdefn[falg]{$U$-algebras} as objects and algebra homomorphisms as
+  morphisms.
 
   \paragraph{}
   %
@@ -534,8 +625,9 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
   \paragraph{}
   %
-  $(UA \overset{f}{\to} UB) \in \mathbf{X}$ \defn[Amporphism]{is an $\mathbf{A}$-morphism}
-  if $f$ has a unique $U$-preimage in $\mathbf{A}$. (\S5.3, \S6.22)
+  $(UA \overset{f}{\to} UB) \in \mathbf{X}$ \defn[Amporphism]{is an
+  $\mathbf{A}$-morphism} if $f$ has an {\em unique} $U$-preimage in
+  $\mathbf{A}$.  (\S5.3, \S6.22)
 
   %An object $A\in\mathbf{A}$ is
   %\dots\! if $\forall_{B \in \mathbf{A}}$, \dots is an $\mathbf{A}$ arrow.
@@ -547,13 +639,14 @@ Entries within each section are roughly sorted by definition, alphabetically.
   \paragraph{}
   %
   A \defn{free object} $A \in \mathbf{A}$ is one with a ($U$-structured)
-  universal arrow $(u,UA)$ in $B$. (\S8.22+\S8.30)
+  universal arrow $(u,UA)$ in $B$. (\S8.22+\S8.30)  \xrdefn{gunivarr}
 
   %$f \in \mathbf{A}$ is \defn{initial} if $\forall_{C \in \mathbf{A}}$ $UC
   %\overset{f \circ g}{\to} UB$ is an $\mathbf{A}$-morphism implies that $UC
   %\overset{g}{\to} UA$ is an $\mathbf{A}$-morphism.
 
-\section{Adjoints and Adjoint Situations}
+% >>>
+\section{Adjoints and Adjoint Situations} % <<<
 
 \subsection{Joy Approach}
 
@@ -561,12 +654,12 @@ Entries within each section are roughly sorted by definition, alphabetically.
   %
   A functor $G : \mathbf{A} \to \mathbf{B}$ is \defn{adjoint} if
   $\forall_{B \in \mathbf{B}}$ there exists a $G$-structured universal
-  arrow with domain $B$.  (\S18.1)
+  arrow with domain $B$.  (\S18.1) \xrdefn{gunivarr}
 
   \paragraph{}
   %
-  Adjoints compose (\S8.5), preserve mono sources (\S8.6), and preserve
-  limits (\S8.9)
+  Adjoints compose (\S8.5), preserve \hrdefn[mono-source]{mono-sources}
+  (\S8.6), and preserve \hrdefn[limit]{limits} (\S8.9)
 
   \paragraph{}
   %
@@ -585,16 +678,21 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
   \paragraph{}
   %
-  An \defn{adjunction} (Awodey:D9.1) of $F : C \to D$ and $G : D \to C$ is a natural
-  transformation $\eta : I_C \stackrel{\cdot}{\to} (G\circ F)$ s.t.
+  An \defn{adjunction} (Awodey:D9.1) of $F : C \to D$ and $G : D \to C$ is a
+  \hrdefn[nattrans]{natural transformation} $\eta : I_C
+  \stackrel{\cdot}{\to} (G\circ F)$ s.t.
+  %
   \[\xymatrix{
      {}\save[]+<-1cm,0cm>*\txt<8pc>{$\forall_{f:X \to GY}\exists!_{f^\#:FX\to Y}$\\
                                     $f = Gf^\# \circ \eta_X$}\restore
       & FX\ar@{..>}[d]^{f^\#} & X \ar[dr]^f \ar[r]^{\eta_X} & GFX \ar@{..>}[d]^{Gf^\#} \\
       & Y & & GY
   }\]
+  %
   Equivalently (Awodey:D9.7), a natural {\em isomorphism}
-  \[ \phi : \mbox{Hom}_D(FC,D) \simeq \mbox{Hom}_C(C,GD), \quad \eta_X = \phi(1_{FX}) \]
+  %
+  \[ \phi : \mbox{Hom}_D(FC,D) \simeq \mbox{Hom}_C(C,GD),
+       \quad \eta_X = \phi(1_{FX}) \]
 
 \subsection{Moving Right Along}
 
@@ -611,8 +709,18 @@ Entries within each section are roughly sorted by definition, alphabetically.
         & TX & 
   }\]
 
+% >>>
 \appendix
-\section{Miscellaneous Terminology}
+\section{Miscellaneous Terminology} % <<<
+
+  \paragraph{}
+  %
+  Given an \hrdefn{endofunctor} $F$ on $\mathbf{C}$, a
+  \defn[falg]<@F-algebra>{$F$-algebra} is a pair of a \defn{carrier} $X \in
+  \mathbf{C}$ and interpretation morphism $h : FX \to X \in \mathbf{C}$.  A
+  \defn{algebra homomorphism} is a morphism $f$ such that $f : (X,h) \to
+  (X',h')$ s.t. $f \circ h = h' \circ T(f)$.  (\S5.37)
+
 
   \paragraph{}
   %
@@ -627,11 +735,13 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
   \paragraph{}
   %
-  An \defn[wCPO]{$\omega$-complete Partial Order} ($\omega$CPO) is a Poset which
-    has all {\em co}limits of type $(\mathbb{N},\le)$.  (All countably
-    infinite ascending chains have a top.) (Awodey:p101,E5.33)
+  An \defn[wCPO]<@w-complete Partial Order>{$\omega$-complete Partial Order}
+  ($\omega$CPO) is a Poset which has all {\em co}limits of type
+  $(\mathbb{N},\le)$.  (All countably infinite ascending chains have a top.)
+  (Awodey:p101,E5.33)
 
-\section{Miscellaneous Useful Properties}
+% >>>
+\section{Miscellaneous Useful Properties} % <<<
 
   \paragraph{}
   %
@@ -668,7 +778,8 @@ Entries within each section are roughly sorted by definition, alphabetically.
   %
   Objects defined by UCs are unique up to isomorphism.
 
-\section{Examples To Jog Your Memory}
+% >>>
+\section{Examples To Jog Your Memory} % <<<
 
 \subsection{$\mathbf{Set}$}
 
@@ -687,8 +798,8 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
   \paragraph{}
   %
-  Mono-epics are not isos ($(\mathbf{N},+,0) \to (\mathbf{Z},+,0)$).
-  (Pierce:\S1.6.3)
+  \hrdefn[bimorphism]{Bimorphisms} are not isos: ($(\mathbf{N},+,0) \to
+  (\mathbf{Z},+,0)$).  (Pierce:\S1.6.3)
 
   \paragraph{}
   %
@@ -722,4 +833,27 @@ Entries within each section are roughly sorted by definition, alphabetically.
   F(X^*)$ (that is, a concatenation of symbols from $GFX$) and re-imposes
   structure to obtain $\epsilon_{FX} y \in FX$.
 
+% >>>
+\section{Bootstrapping Category Theory} % <<<
+
+  \paragraph{}
+  %
+  \defn[catcat]<@Cat>{$\mathbf{Cat}$} is the category which has locally
+  small categories as objects and \hrdefn[functor]{functors} as morphisms.
+  (It is not, itself, locally small, and so is not an object in itself.)
+  $\mathbf{Cat}$ is \hrdefn{cartesian closed} (see \hrdefn{product category}
+  and \hrdefn{exponential category}).  Its initial object is the empty
+  category and its terminal object is the category of a single object and
+  its identity morphism.
+
+% >>>
+% Footer <<<
+\printindex
+
+\bibliographystyle{alphaurl}
+\bibliography{ctcheat}
+
 \end{document}
+
+% vim: ai:expandtab:ts=4:foldmethod=marker:foldmarker=<<<,>>>
+% >>>

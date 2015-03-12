@@ -33,12 +33,12 @@
 
 \begin{document}
 
-\section{Bifunctors}
-
 In the paper {\bf Functional Pearl: F for Functor} from ICPF '12, the
 concept of a \defn{bifunctor} is introduced quickly and somewhat
 confusingly.  Herein, as Neil Gaiman wrote in Good Omens,  ``the text will
 be slowed down to allow the sleight of hand to be followed.''
+
+\section{Bifunctors}
 
 A \defn{bifunctor} is a two-argument object, here denoted $\textrm{---}
 \otimes \textrm{---} \in \mathcal{E}^{\mathcal{C} \times \mathcal{D}}$,
@@ -47,25 +47,27 @@ which
 \begin{itemize}
 %
   \item Sends an object $C \times D \in \mathcal{C} \times \mathcal{D}$ to
-an object $C \otimes D \in \mathcal{E}$.
+  an object $C \otimes D \in \mathcal{E}$ and a morphism $f \times g \in
+  \Hom{\mathcal{C} \times \mathcal{D}}{C \times D}{C' \times D'}$ to a
+  morphism $f \otimes g \in \Hom{\mathcal{E}}{C \otimes D}{C' \otimes D'}$.
 %
-  \item Sends a morphism $f \times g \in \Hom{\mathcal{C} \times
-\mathcal{D}}{C \times D}{C' \times D'}$ to a morphism
-$f \otimes g \in \Hom{\mathcal{E}}{C \otimes D}{C' \otimes D'}$.
-%
-  \item Preserves identities: $id_C \otimes id_D = id_{C \otimes D}$.
-%
-  \item Preserves composition: $(f' \circ f) \otimes (g' \circ g) = (f'
-\otimes g') \circ (f \otimes g)$.
+  \item Preserves identities ($id_C \otimes id_D = id_{C \otimes D}$) and
+  composition: $(f' \circ f) \otimes (g' \circ g) = (f' \otimes g') \circ (f
+  \otimes g)$.
 %
   \item Has a $\mathcal{C}$-object-indexed collection of {\em functors}
-obtained by partial application on the left: a $L^\otimes_C = \paren{C \otimes
-\textrm{---}} \in \mathcal{E}^\mathcal{D}$ for each object $C \in
-\mathcal{C}$.
-%
-  \item Has a $\mathcal{D}$-object-indexed collection of {\em functors}
-obtained by partial application on the right: a $R^\otimes_D \paren{\textrm{---} \otimes
-D} \in \mathcal{E}^\mathcal{C}$ for each object $D \in \mathcal{D}$.
+  obtained by partial application on the left: a $L^\otimes_C = \paren{C
+  \otimes \textrm{---}} \in \mathcal{E}^\mathcal{D}$ for each object $C \in
+  \mathcal{C}$, and a $\mathcal{D}$-object-indexed collection from the
+  right: a $R^\otimes_D \paren{\textrm{---} \otimes D} \in
+  \mathcal{E}^\mathcal{C}$ for each object $D \in \mathcal{D}$.%
+  %
+  \footnote{Of course, there are also functor families indexed by arrows,
+  which might be designated $\tilde{L}^\otimes_f = \paren{f \otimes
+  \textrm{---}} \in \mathcal{E}^\mathcal{D}$ for each $f \in \mathcal{C}$.
+  However, these bring no new degrees of freedom to the table, as
+  $\tilde{L}^\otimes_f(D) = f \otimes D = R^\otimes_D f$ and
+  $\tilde{L}^\otimes_f(g) = f \otimes g$.}
 %
 \end{itemize}
 
