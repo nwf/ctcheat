@@ -103,6 +103,10 @@
 \newcommand{\xrdefn}[1]{\ref{\forcsvlist{\xrdefnhelper}{#1}}}
 \newcommand{\hrdefn}[2][]{\ifstrempty{#1}{\hyperref[defn:#2]{#2}[\ref{defn:#2}]}
                                          {\hyperref[defn:#1]{#2}[\ref{defn:#1}]}} 
+
+\newcommand\xrexhelper[1]{ex:#1}
+\newcommand{\xrex}[1]{EX: \ref{\forcsvlist{\xrexhelper}{#1}}}
+
 \begin{document}
 %>>>
 % Intro <<<
@@ -218,7 +222,7 @@ quantified formula.
   %
   $C$ is a \defn{coseparator} if $\forall_{f,g : B \to A} f \ne g
   \Rightarrow \exists_{h : A \to C} . h \circ f \ne h \circ g$. (\S7.17)
-  (Contrast monomorphism.)
+  (Contrast \hrdefn{monomorphism}.)
 
 %  \paragraph{}
 %  %
@@ -269,7 +273,7 @@ quantified formula.
   %
   $S$ is a \defn{separator} if $\forall_{f,g : A \to B} f \ne g
   \Rightarrow \exists_{h : S \to A} . f \circ h \ne g \circ h$. (\S7.10)
-  (Contrast epimorphism.)
+  (Contrast \hrdefn{epimorphism}.)
   $S$ is a separator iff $\mbox{hom}(S,-)$ is faithful. (\S7.12)
 
   \paragraph{}
@@ -286,7 +290,7 @@ quantified formula.
   \paragraph{}
   %
   An object that is both initial and terminal is called a \defn{zero}.
-  (\S7.7)
+  (\S7.7) \xrex{mon0}
 
 % >>>
 \section{Arrow Properties} % <<<
@@ -298,6 +302,7 @@ quantified formula.
      Z & Q \ar@{..>}[l]^u & B \ar[l]^q \ar@/^1pc/[ll]^{z} & A \ar@<1ex>[l]^f \ar@<-1ex>[l]_g
      }\]
   Coequalizers are essentially unique (\S7.70.1) and epic (\S7.71,\S7.75.2).
+  \xrex{setcoeq}
 
   \paragraph{}
   %
@@ -307,7 +312,7 @@ quantified formula.
     \[\xymatrix{\forall_{i,j} ie = je \Rightarrow i = j & A \ar@{->>}[r]^e & B \ar@<1ex>[r]^{i} \ar@<-1ex>[r]_j & C} \]
   %
   If $f$ and $g$ are epis, then so is $g \circ f$; if $g \circ f$ is epi,
-  then so is $g$. (\S7.41)
+  then so is $g$. (\S7.41) \xrex{setmonepi}
 
   \paragraph{}
   %
@@ -317,6 +322,7 @@ quantified formula.
      Z \ar@{..>}[r]^u \ar@/_1pc/[rr]^{z} & E \ar[r]^e & A \ar@<1ex>[r]^f \ar@<-1ex>[r]_g & B \\
      }\]
   Equalizers are essentially unique (\S7.53) and monic (\S7.56,\S7.59.2).
+  \xrex{seteq}
 
   \paragraph{}
   %
@@ -365,11 +371,11 @@ quantified formula.
     \[\xymatrix{\forall_{i,j} mi = mj \Rightarrow i = j & C \ar@<1ex>[r]^{i} \ar@<-1ex>[r]_j & A \ar@{{ >}->}[r]^m & B} \]
   If $f$ and $g$ are monos, then so is $g \circ f$; if $g \circ f$ is mono,
   then so is $f$. (\S7.34)  Objects with monomorphisms to $X$ are called
-  \defn{subobjects} of $X$ (Awodey:D5.1).
+  \defn{subobjects} of $X$ (Awodey:D5.1). \xrex{setmonepi}
 
   \paragraph{}
   %
-  A \defn{point} (Awodey:p32) of $C$ is any $c : 1 \to C$.
+  A \defn{point} (Awodey:p32) of $C$ is any $c : 1 \to C$. \xrex{monpt}
 
   \paragraph{}
   %
@@ -394,7 +400,7 @@ quantified formula.
   %
   Several morphism properties combine in useful ways:
   \begin{itemize}
-    \item mono, epi $\Rightarrow$ \defn{bimorphism} (\S7.49)
+    \item mono, epi $\Rightarrow$ \defn{bimorphism} (\S7.49) \xrex{monbi}
     \item section $\Rightarrow$ regular mono (\S7.35, \S7.59.1)
     \item regular mono $\Rightarrow$ extremal mono (\S7.59.2, \S7.63)
     \item retraction $\Rightarrow$ epi (\S7.42)
@@ -659,6 +665,9 @@ quantified formula.
 
 % >>>
 \section{Adjoints and Adjoint Situations} % <<<
+\label{sec:adj}
+
+Be sure to see \autoref{sec:adjex} for examples.
 
 \subsection{Joy Approach}
 
@@ -795,33 +804,39 @@ quantified formula.
 
 \subsection{$\mathbf{Set}$}
 
-  \paragraph{} Epic is surjective, monic is injective.
+  \paragraph{}\label{ex:setmonepi}
+  %
+  \hrdefn[epic]{Epic} is surjective, \hrdefn{monic} is injective.
 
-  \paragraph{}
-  Coequalizers correspond to equivalence classes (\S7.69.1): Let $\sim$ be
-  {\em the smallest} eq. rel. s.t. $\forall_{a \in A} f(a) \sim g(a)$;
-  then $(Q,q) = (B/\sim, b \mapsto \brak{b}_\sim)$ is a coequalizer of $f$
-  and $g$.
+  \paragraph{}\label{ex:setcoeq}
+  %
+  \hrdefn[coequalizer]{Coequalizers} correspond to equivalence classes
+  (\S7.69.1): Let $\sim$ be {\em the smallest} eq. rel. s.t. $\forall_{a \in
+  A} f(a) \sim g(a)$; then $(Q,q) = (B/\sim, b \mapsto \brak{b}_\sim)$ is a
+  coequalizer of $f$ and $g$.
 
-  \paragraph{}
-  Equalizers: $(E,e) = (\set{x \mid f(x) = g(x)} \subseteq X, \subseteq)$.
+  \paragraph{}\label{ex:seteq}
+  %
+  \hrdefn[equalizer]{Equalizers}: $(E,e) = (\set{x \mid f(x) = g(x)} \subseteq X, \subseteq)$.
 
 \subsection{$\mathbf{Mon}$}
 
-  \paragraph{}
+  \paragraph{}\label{ex:monbi}
   %
   \hrdefn[bimorphism]{Bimorphisms} are not isos: ($(\mathbf{N},+,0) \to
   (\mathbf{Z},+,0)$).  (Pierce:\S1.6.3)
 
-  \paragraph{}
+  \paragraph{}\label{ex:mon0}
   %
-  $(\set{*},\cdot,*)$ is a (the) zero.
+  $(\set{*},\cdot,*)$ is a (the) \hrdefn{zero}.
 
-  \paragraph{}
+  \paragraph{}\label{ex:monpt}
   %
-  Each monoid $M$ has only one point, $1 \to M$.
+  Each monoid $M$ has only one \hrdefn{point}, $1 \to M$.
 
 \subsection{Adjoint Situations and Monads}
+  \label{sec:adjex}
+  Defintitons in \autoref{sec:adj}.
 
   \paragraph{}
   %
