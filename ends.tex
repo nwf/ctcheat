@@ -49,11 +49,8 @@ want to embed functions, because we need exponential objects: they
 correspond to $\to$-typed objects.
 
 In fact, there's a natural tool that goes a great distance in helping us
-here.  The $\text{Hom}_{\mathbf{C}}$ bifunctor (in fact, profunctor: a
-bifunctor with one contravariant argument and one covariant argument).
-Given any two objects in $\mathbf{C}$, it gives us the {\em set} of arrows
-between them.  More generally, {\em any} profunctor produces
-``$\text{Hom}$-like constructs'' in its target category.
+here.  The $\text{Hom}_{\mathbf{C}}$ diagonal bifunctor.  Given any two
+objects in $\mathbf{C}$, it gives us the {\em set} of arrows between them.
 
 A glaring deficiency of this embedding, however, is the complete lack of
 polymorphism.  There is no one ``identity function'' in this story, rather,
@@ -74,11 +71,11 @@ semantics.
 But that clever trick breaks down if we have non-prenex polymorphism, where
 we can actually give a binder whose type involves a universal quantifier.
 Such an expression might be $(\Lambda_{\alpha : \star} \lambda_{f :
-\Lambda_{\beta : \star} . \beta \to \beta} \lambda_{x . \alpha} f \alpha x)
+\Lambda_{\beta : \star} . \beta \to \beta} \lambda_{x . \alpha} f~\alpha~x)
 : \forall_{\alpha : \star} (\forall_{\beta : \star} . \beta \to \beta) \to
 \alpha \to \alpha$.  (This is not intended to be a terribly {\em useful}
 example, just illustrative.)  Here we see that we have a type variable
-$\alpha$ quantified in prenex position, and another, $\alpha$, whose
+$\alpha$ quantified in prenex position, and another, $\beta$, whose
 quantifier cannot be moved higher.  Put a different way, $f$ is drawn from
 {\em the set of polymorphic functions} $\forall_{\alpha : \star} . \alpha
 \to \alpha$.  If we want to give categorical semantics to this object, we
@@ -161,6 +158,12 @@ given, additionally, $f' : A' \to A'' \in \mathbf{A}_1$ and $g' : B' \to B''
 \in \mathbf{B}_1$, then $S~(f \circ f')~(g \circ g') : S~A''~B \to S~A~B''$
 is the composition of $S~f~g' : S~A'~B' \to S~A~B''$ and $S~f'~g : S~A''~B
 \to S~A'~B'$.}
+
+When $\mathbf{A} = \mathbf{B}$, we may call $S$ a ``diagonal profunctor''.
+Such a thing generalizes $\text{Hom}$ by producing ``$\text{Hom}$-like
+constructs'' in its target category and capturing both pre- and
+post-composition.  The objects in the image of a profunctor are objects that
+can play the role of bundles of arrows of the source category.
 
 \section{A Particular Diagonal Profunctor}
 \label{sec:apdp}
@@ -254,10 +257,9 @@ universal diagram defining a product!}
 
 \section{Generalizing: Dinatural Transformations and Generalized Limits}
 
-When $\mathbf{A} = \mathbf{B}$, we may call $S$ a ``diagonal profunctor''.
 We can generalize the notion of a natural transformation between two
 functors to a ``dinatural transformation'' (for ``diagonally-natural'')
-between two such diagonal profunctors.  Like a natural transformation, a
+between two diagonal profunctors.  Like a natural transformation, a
 dinatural transformation is a quiver of arrows; possibly surprisingly, the
 quiver will continue to be a single-indexed object on objects of
 $\mathbf{A}$.  Concretely, $\theta : R \stackrel{\bullet}{\to} S$ is a
@@ -288,11 +290,10 @@ dinatural transformation if
 
 \end{tikzpicture}\end{center}
 
-If we define a ``constant
-bifunctor'' $\kappa~\tau~\tau' = N$ and $\kappa~f~g = id_N$, then our
-$S_{\text{nat},F,G}$-based rendering of natural transformations' equation in
-\autoref{sec:apdp} above is a
-dinatural transformation $\kappa \stackrel{\bullet}{\to} S_{\text{nat},F,G}$!
+If we define a ``constant bifunctor'' $\kappa~\tau~\tau' = N$ and
+$\kappa~f~g = id_N$, then our $S_{\text{nat},F,G}$-based rendering of
+natural transformations' equation in \autoref{sec:apdp} above is a dinatural
+transformation $\kappa \stackrel{\bullet}{\to} S_{\text{nat},F,G}$!
 
 Recall that a limit of a diagram $\mathbf{J}$ included into $\mathbf{C}$ by
 a full and faithful functor $F$ is the terminal object in the subcategory of
