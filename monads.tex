@@ -1,0 +1,195 @@
+\documentclass[10pt,letterpaper]{article}
+\DeclareSymbolFont{AMSb}{U}{msb}{m}{n}
+\DeclareMathAlphabet{\mathbbm}{U}{bbm}{m}{n}
+
+\usepackage{amsmath,amssymb,amsthm,latexsym}
+\usepackage{fancyhdr}
+\usepackage[tiny,center,compact,sc]{titlesec}
+\usepackage[cm]{fullpage}
+\usepackage{pstricks}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{bm}
+\usepackage{ifthen}
+\usepackage{epsfig}
+\usepackage[all]{xypic}
+\usepackage{textcomp}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{breakurl}
+\usepackage{listings}
+
+\renewcommand{\baselinestretch}{0.9}
+
+%\newtheorem{thm}{Thm}[section]
+%\newtheorem{dfn}{Def}[section]
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+
+%Scalable bracket-like
+\newcommand{\paren}[1]{\left({#1}\right)}
+\newcommand{\brak}[1]{\left[{#1}\right]}
+\newcommand{\abs}[1]{\left\lvert{#1}\right\rvert}
+\newcommand{\ang}[1]{\left\langle{#1}\right\rangle}
+\newcommand{\set}[1]{\left\{#1\right\}}
+
+%Mathematics
+\newcommand{\condexp}[1]{\ifthenelse{\equal{#1}{false}}{}{^{#1}}}
+\newcommand{\dd}[3][false]{\frac{d\condexp{#1}{#2}}{d{#3}\condexp{#1}}}
+\newcommand{\pd}[3][false]{\frac{\partial\condexp{#1}{#2}}{\partial{#3}\condexp{#1}}}
+
+\newcommand{\ifrac}[2]{{#1}/{#2}}
+
+%Quantum Mechanics
+\newcommand{\ket}[1]{\left\lvert{#1}\right\rangle}
+\newcommand{\bra}[1]{\left\langle{#1}\right\rvert}
+\newcommand{\braket}[2]{\left\langle{#1}\middle\vert{#2}\right\rangle}
+\newcommand{\Braket}[3]{\left\langle{#1}\middle\vert{#2}\middle\vert{#3}\right\rangle}
+\newcommand{\dyad}[2]{\left\lvert{#1}\middle\rangle\middle\langle{#2}\right\rvert}
+
+\DeclareMathOperator{\mm}{\mid\mid}
+
+\newcommand{\defn}[1]{{\bf #1}}
+\newcommand{\natto}{\overset{\cdot}{\to}}
+
+\lstset{mathescape=true}
+
+\begin{document}
+
+\section{Expanding The Diagrams}
+
+The definition and diagrams given in ACC (\S20.1) are sort of terse, so I
+have taken the liberty of applying the notation in (\S6.2) and (\S3.23,
+footnote 15) and applying the functors to particular objects $X,Y \in
+\mathbf{X}$:
+\begin{itemize}
+  \item The definition now reads as: A \defn{monad} on $\mathbf{X}$ is $(T : \mathbf{X} \to \mathbf{X},
+  \eta : id_{\mathbf{X}} \natto T, \mu : T^2 \natto T)$ s.t.
+  \[\forall_X \quad
+  \xymatrix{
+    T^3X \ar[r]^{T(\mu_X)} \ar[d]^{\mu_{TX}} & T^2X \ar[d]^{\mu_{X}} \\
+    T^2X \ar[r]^{\mu_X}                 & TX
+  } \quad \xymatrix{
+    TX \ar[r]^{T(\eta_X)} \ar[dr]_{id_{TX}} & T^2X \ar[d]^{\mu_X} & TX \ar[l]_{\eta_{TX}} \ar[dl]^{id_{TX}} \\
+        & TX & 
+  }\]
+  \item The naturality conditions unpack to be
+  \[\forall_{X,Y,f} \quad \xymatrix{
+    X \ar[r]^{\eta_X} \ar[d]^f & TX \ar[d]^{Tf} \\
+    Y \ar[r]^{\eta_Y}          & TY
+  }\quad\xymatrix{
+    T^2X \ar[r]^{\mu_X} \ar[d]^{T^2f} & TX \ar[d]^{Tf} \\
+    T^2Y \ar[r]^{\mu_Y}               & TY
+  }\]
+\end{itemize}
+
+\section{Translation into Haskell}
+
+\url{http://en.wikibooks.org/wiki/Haskell/Category_theory#The_monad_laws_and_their_importance}
+may be of use, and I am going to try a brief, more equational, exposition
+here (with many more parens than strictly necessary; deal with it).
+
+$\eta$ pretty clearly corresponds to \texttt{return}, and $Tf$ is
+\texttt{fmap f}.  The naturality condition on $\eta$ is clear:
+\begin{lstlisting}[language=Haskell]
+    fmap f . return  -- top right
+=== return . f       -- bottom left
+\end{lstlisting}
+This is properly read as a constraint (part of the definition) of
+\texttt{return} ($\eta$) in terms of \texttt{fmap} applied at the type
+(constructor / functor) associated with our monad (i.e., the morphism part
+of the functor).
+
+Similarly, $\mu$ corresponds to \texttt{join}, whose Haskell definition
+is
+\begin{lstlisting}
+join :: m (m a) -> m a
+join mma = (mma >>= id)   -- or just "join = (>>= id)"
+\end{lstlisting}
+(Haskell, by convention, uses \texttt{m} for $T$; sorry for the confusion.)
+Its naturality condition says that
+\begin{lstlisting}
+    (fmap f) . join         -- top right
+=== join . (fmap (fmap f))  -- bottom left
+\end{lstlisting}
+This says, basically, that you can first run your inner monadic thingie and
+then apply a ``lifted'' function to the result, or you can lift the function
+twice, so that it applies inside your inner monadic thingie and {\em then}
+run the inner thing.  Again, this should be taken as a constraint (part of
+the definition) on join ($\mu$) in terms of \texttt{fmap}.
+
+And now the other two laws, which are more interesting and can nicely be
+executed in terms of Haskell's \verb|>>=|.  First, we have:
+\[ \mu_X \circ T(\mu_X) = \mu_X \circ \mu_{TX} \]
+or
+\begin{lstlisting}
+join . (fmap join) === join . join
+\end{lstlisting}
+Which is easy enough to see:
+\begin{lstlisting}
+  join (fmap join mmmx)
+= (mmmx >>= return . join) >>= id                 -- defn  join, fmap
+= (mmmx >>= (\mmx -> return (join mmx))) >>= id   -- syntax
+= (mmmx >>= (\mmx -> return (mmx >>= id))) >>= id -- defn  join
+= mmmx >>= (\mmx -> (return (mmx >>= id) >>= id)) -- assoc >>=
+= mmmx >>= (\mmx -> id (mmx >>= id))              -- left-identity >>=
+= mmmx >>= (\mmx -> mmx >>= id)                   -- apply
+= mmmx >>= (\mmx -> mmx) >>= id                   -- assoc >>=
+= (mmmx >>= id) >>= id                            -- assoc >>=
+= join (join mmmx)                                -- defn  join, join
+\end{lstlisting}
+If we label our \text{mmmx} object as $\mathtt{m_1 m_2 m_3 x}$, this
+says, in some pseudo-notation, that $\mathtt{join (m_1 (m_{23} x))}$
+is the same as $\mathtt{join (m_{12} (m_3 x))}$.
+
+And for the last, we have:
+\[ id = \mu_X \circ T(\eta_X) = \mu_X \circ \eta_{TX} \]
+or
+\begin{lstlisting}
+id === join . (fmap return) === \tx -> join . (return tx)
+\end{lstlisting}
+(note that we do not interpret $\eta_{TX}$ as \texttt{return . return}, but
+as \texttt{return tx}!  There's no guarantee that a (generalized) element of
+$TX$ is the result of $\eta_X$ -- consider, for example, the \texttt{Either
+e} (i.e., $(e+)$) monads!)
+which again admits executable rewriting (I have taken the liberty of
+subscripting some functions, just to make the rewrites clearer.)
+\begin{lstlisting}
+  join (fmap return tx)
+= join (tx >>= return$_1$ . return$_2$)                   -- defn  fmap
+= (tx >>= return$_1$ . return$_2$) >>= id                 -- defn  join
+= (tx >>= (\x -> return$_1$ (return$_2$ x))) >>= id       -- syntax
+= tx >>= (\x -> ((return$_1$ (return$_2$ x)) >>= id)      -- assoc >>=
+= tx >>= (\x -> id (return$_2$ x))                    -- left-identity >>=
+= tx >>= (\x -> return$_2$ x)                         -- apply
+= tx >>= return$_2$                                   -- syntax
+= tx                                              -- right-identity >>=
+\end{lstlisting}
+and
+\begin{lstlisting}
+  \tx -> join . (return tx)
+= \tx -> ((return tx) >>= id)                     -- defn  join
+= \tx -> (id tx)                                  -- left-identity >>=
+= \tx -> tx                                       -- apply
+= id                                              -- defn
+\end{lstlisting}
+
+\section{Speaking of Haskell}
+
+For the curious, \verb|>>=| can be implemented in terms of join (which makes
+the above arguments circular (sorry!), but puts Haskell's typical treatment
+of Monads on firmer ground):
+\begin{lstlisting}
+(>>=) :: m a -> (a -> m b) -> m b
+ma >>= f  = join (fmap f ma)
+--        = (fmap f ma) >>= id
+--        = (ma >>= return . f) >>= id
+--        = ma >>= (\a -> (return (f a) >>= id))
+--        = ma >>= (\a -> id (f a))
+--        = ma >>= \a -> f a
+--        = ma >>= f
+\end{lstlisting}
+
+\end{document}
