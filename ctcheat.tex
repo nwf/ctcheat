@@ -114,6 +114,16 @@ Scientists}, \cite{pierce:basicct}.
 
 Entries within each section are roughly sorted by definition, alphabetically.
 
+Quantifiers are written perhaps unusually in this document, as $Q_{\phi}$,
+where $Q$ is $\forall$, $\exists$, $\bigcup$, etc. and $\phi$ is a list of
+variables or an expression whose free variables are quantified over.
+Constrained quantification may be written as $v_1 : \tau_1, v_2 : \tau_2 .
+\phi(v_1,v_2)$ to indicate ``the pairs of values $v_1$ ($\in \tau_1$) and
+$v_2$ ($\in \tau_2$) such that $\phi(v_1,v_2)$ holds''.  Strings of
+quantifiers are represented $Q_{\phi} Q'_{\phi'}$ etc.  There is not
+necessarily a dot between quantifiers or between the quantifiers and
+quantified formula.
+
 %>>>
 \section{Basics} % <<<
 
@@ -206,13 +216,18 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
   \paragraph{}
   %
-  $C$ is a \defn{coseparator} if $\forall_{f,g : B \to A} . f \ne g
+  $C$ is a \defn{coseparator} if $\forall_{f,g : B \to A} f \ne g
   \Rightarrow \exists_{h : A \to C} . h \circ f \ne h \circ g$. (\S7.17)
   (Contrast monomorphism.)
 
+%  \paragraph{}
+%  %
+%  The \defn{end} of a diagonal profunctor $S : \mathbf{A}^\text{op} \times
+%  \mathbf{A} \to \mathbf{B}$ is the object 
+
   \paragraph{}
   %
-  An object $0$ is \defn{initial} if $\forall_B . \exists! f_B : 0 \to B$.
+  An object $0$ is \defn{initial} if $\forall_B \exists! f_B : 0 \to B$.
   (\S7.1)
 
   \paragraph{}
@@ -252,7 +267,7 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
   \paragraph{}
   %
-  $S$ is a \defn{separator} if $\forall_{f,g : A \to B} . f \ne g
+  $S$ is a \defn{separator} if $\forall_{f,g : A \to B} f \ne g
   \Rightarrow \exists_{h : S \to A} . f \circ h \ne g \circ h$. (\S7.10)
   (Contrast epimorphism.)
   $S$ is a separator iff $\mbox{hom}(S,-)$ is faithful. (\S7.12)
@@ -260,12 +275,12 @@ Entries within each section are roughly sorted by definition, alphabetically.
   \paragraph{}
   %
   A set of objects $\mathcal{T}$ is a \defn{separating set} if
-  $\forall_{f,g : A \to B} . f \ne g \Rightarrow \exists{S \in \mathcal{T},
+  $\forall_{f,g : A \to B} f \ne g \Rightarrow \exists{S \in \mathcal{T},
   h : S \to A} . f \circ h \ne g \circ h$. (\S7.14)
 
   \paragraph{}
   %
-  An object $1$ is \defn{terminal} if $\forall_A . \exists! f_A : A \to 1$.
+  An object $1$ is \defn{terminal} if $\forall_A \exists! f_A : A \to 1$.
   (\S7.4)
 
   \paragraph{}
@@ -289,7 +304,7 @@ Entries within each section are roughly sorted by definition, alphabetically.
   $e$ is an \defn{epimorphism} (\S7.39) (the dual of a monomorphism)
   (equiv: is \defn{epic} (Awodey:D2.1)) if
   %
-    \[\xymatrix{\forall_{i,j} . ie = je \Rightarrow i = j & A \ar@{->>}[r]^e & B \ar@<1ex>[r]^{i} \ar@<-1ex>[r]_j & C} \]
+    \[\xymatrix{\forall_{i,j} ie = je \Rightarrow i = j & A \ar@{->>}[r]^e & B \ar@<1ex>[r]^{i} \ar@<-1ex>[r]_j & C} \]
   %
   If $f$ and $g$ are epis, then so is $g \circ f$; if $g \circ f$ is epi,
   then so is $g$. (\S7.41)
@@ -316,16 +331,16 @@ Entries within each section are roughly sorted by definition, alphabetically.
   %
   \begin{itemize}
     %
-    \item \defn{generating} if $\forall_{r,s : A \to A'} . Gr \circ f = Gs
+    \item \defn{generating} if $\forall_{r,s : A \to A'} Gr \circ f = Gs
       \circ f \implies r = s$
 	%
     \item \defn{extremally generating} if it is generating and $\forall_{m :
-      A' \to A, m ~\text{mono}, (g,A')} . f = Gm \circ g \implies m ~\text{iso}$.
+      A' \to A, m ~\text{mono}, (g,A')} f = Gm \circ g \implies m ~\text{iso}$.
 	%
 	\item \defn[gunivarr]<@G-universal for B>{$G$-universal for $B$} if
-	$\forall_{(f', A')} .
+	$\forall_{(f', A')}
 	%
-    \exists!_{\check f} . f' = G{\check f} \circ f$.  That is,
+    \exists!_{\check f} f' = G{\check f} \circ f$.  That is,
     \[\xymatrix{
         B \ar[r]^f \ar@/_1.25pc/[rr]^{f'}
         & GA \ar@{.>}[r]^{G{\check f}}
@@ -347,7 +362,7 @@ Entries within each section are roughly sorted by definition, alphabetically.
   %
   $f$ is a \defn{monomorphism} (\S7.32) (equiv: is \defn{monic}
   (Awodey:D2.1)) if
-    \[\xymatrix{\forall_{i,j} . mi = mj \Rightarrow i = j & C \ar@<1ex>[r]^{i} \ar@<-1ex>[r]_j & A \ar@{{ >}->}[r]^m & B} \]
+    \[\xymatrix{\forall_{i,j} mi = mj \Rightarrow i = j & C \ar@<1ex>[r]^{i} \ar@<-1ex>[r]_j & A \ar@{{ >}->}[r]^m & B} \]
   If $f$ and $g$ are monos, then so is $g \circ f$; if $g \circ f$ is mono,
   then so is $f$. (\S7.34)  Objects with monomorphisms to $X$ are called
   \defn{subobjects} of $X$ (Awodey:D5.1).
@@ -486,10 +501,10 @@ Entries within each section are roughly sorted by definition, alphabetically.
     \item an \defn{equivalence} if it is full, faithful, and
       isomorphism-dense.
     \item an \defn{embedding} if it is injective on morphisms.
-    \item \defn{faithful} if $\forall_{A,A'} . F\vert_{\mathbf{A}(A,A')}
+    \item \defn{faithful} if $\forall_{A,A'} F\vert_{\mathbf{A}(A,A')}
       \subseteq \mathbf{B}(FA, FA')$ is injective.
-    \item \defn[fullfunc]{full} if $\forall_{A,A'} . F\vert_{\mathbf{A}(A,A')}$ surjective.
-    \item \defn{isomorphism-dense} if $\forall_B . \exists_A . F(A) \simeq B$.
+    \item \defn[fullfunc]{full} if $\forall_{A,A'} F\vert_{\mathbf{A}(A,A')}$ surjective.
+    \item \defn{isomorphism-dense} if $\forall_B \exists_A . F(A) \simeq B$.
   \end{itemize}
 
   \paragraph{}
@@ -512,7 +527,7 @@ Entries within each section are roughly sorted by definition, alphabetically.
   %
   A \defn[nattrans]{natural transformation} $\tau : F \natto G$ assigns each
   $A \in \mathbf{A}$ to $\tau_A : FA \to GA$ s.t.
-  $\forall_{f : A \to A'} . G f \circ \tau_A = \tau_{A'} \circ F f$
+  $\forall_{f : A \to A'} G f \circ \tau_A = \tau_{A'} \circ F f$
   (\S6.1;Awodey:D7.6).
   That is,
   %
@@ -537,6 +552,10 @@ Entries within each section are roughly sorted by definition, alphabetically.
 %  \paragraph{}
 %  %
 %  A \defn[exttrans]{extranatural transformation} is one where
+%
+%  \paragraph{}
+%  %
+%  A \defn[dinat]{dinatural transform} is
 
 % >>>
 \subsection{Special Functors} % <<<
@@ -593,16 +612,9 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
   \paragraph{}
   %
-  A \defn{mono-source} (\S10.5) is $(A,\set{f_i})$ s.t. \\ $\forall r,s: B \to A.
-  \brak{\forall_{i\in I} . f_i \circ r = f_i \circ s} \Rightarrow r = s$.
+  A \defn{mono-source} (\S10.5) is $(A,\set{f_i})$ s.t. \\ $\forall r,s: B \to A 
+  \brak{\forall_{i\in I} f_i \circ r = f_i \circ s} \Rightarrow r = s$.
 
-% >>>
-% \section{Ends} % <<<
-% XXX not yet 
-%   \paragraph{}
-%   %
-%   
-% 
 % >>>
 \section{Concrete Categories} % <<<
 
@@ -787,7 +799,7 @@ Entries within each section are roughly sorted by definition, alphabetically.
 
   \paragraph{}
   Coequalizers correspond to equivalence classes (\S7.69.1): Let $\sim$ be
-  {\em the smallest} eq. rel. s.t. $\forall_{a \in A} . f(a) \sim g(a)$;
+  {\em the smallest} eq. rel. s.t. $\forall_{a \in A} f(a) \sim g(a)$;
   then $(Q,q) = (B/\sim, b \mapsto \brak{b}_\sim)$ is a coequalizer of $f$
   and $g$.
 
@@ -814,7 +826,7 @@ Entries within each section are roughly sorted by definition, alphabetically.
   \paragraph{}
   %
   Consider $(\eta, \epsilon) : F \dashv G : \mathbf{Mon} \to \mathbf{Set}$.
-  $\eta_X : X \to GFX$ is insertion of generators: $\forall x \in X . \eta_X x = x$.
+  $\eta_X : X \to GFX$ is insertion of generators: $\forall x \in X \eta_X x = x$.
   $\epsilon_Y : FGY \to Y$ is the re-introduction of structure;
   if $FGY = ((GY)^*, \cdot, \varepsilon)$ and $Y = (GY, +, 0)$ then
     \[ \epsilon_Y \varepsilon = 0
